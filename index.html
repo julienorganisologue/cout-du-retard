@@ -806,7 +806,8 @@
 
   @media (max-width: 900px) {
     html, body {
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
       height: auto;
     }
     body {
@@ -832,6 +833,18 @@
       letter-spacing: -1px;
     }
     .big-number { font-size: 72px; }
+    .result-inner { max-width: 100%; }
+    .queue-number { font-size: 72px !important; letter-spacing: -2px; }
+    .cta-email-row {
+      flex-direction: column;
+      max-width: 100%;
+    }
+    .cta-btn { width: 100%; }
+    .cta-email-input { width: 100%; }
+    .cta-section { padding: 20px 16px; }
+    .insights { padding: 14px; }
+    .chart-container { padding: 12px 6px 8px; }
+    .dynamics-title { font-size: 18px; }
   }
 
   @media (max-width: 480px) {
@@ -841,6 +854,7 @@
     }
     .big-number { font-size: 60px; }
     .card { padding: 20px; }
+    .queue-number { font-size: 60px !important; }
   }
 </style>
 </head>
