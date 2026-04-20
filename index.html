@@ -899,8 +899,8 @@
     <div class="card">
       <div class="label">Nature du gain attendu</div>
       <div class="mode-toggle">
-        <button class="mode-btn active" data-mode="recurring">Se répète chaque mois</button>
-        <button class="mode-btn" data-mode="oneshot">Gain unique (un bloc)</button>
+        <button class="mode-btn active" data-mode="recurring">Récurrent</button>
+        <button class="mode-btn" data-mode="oneshot">Gain Unique</button>
       </div>
 
       <div id="recurringMode">
@@ -910,7 +910,7 @@
           <span>500 €</span>
           <span>50 000 €</span>
         </div>
-        <p class="tip">💡 Pour un gain qui se renouvelle chaque mois : un commercial qui ramène du CA, un outil qui fait gagner du temps chaque semaine, un service qui génère du MRR, des témoignages qui améliorent la conversion…</p>
+        <p class="tip">💡 Exemple : un commercial qui ramène du CA, un outil qui fait gagner du temps chaque semaine, un service qui génère du MRR, des témoignages qui améliorent la conversion…</p>
       </div>
 
       <div id="oneshotMode" style="display:none;">
@@ -920,7 +920,7 @@
           <span>1 000 €</span>
           <span>500 000 €</span>
         </div>
-        <p class="tip">💡 Pour une valeur qui se débloque en une seule fois : une subvention à décrocher, une amende à éviter, la vente d'un actif, une mise aux normes obligatoire…</p>
+        <p class="tip">💡 Exemple : un client qui est livré, une subvention à décrocher, une amende à éviter, la vente d'un actif, une mise aux normes obligatoire…</p>
       </div>
     </div>
 
@@ -1189,9 +1189,9 @@
       }
     } else {
       if (burn > 0) {
-        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 %/mois × ${months} mois + ${formatEuroNoSuffix(burn)} €/mois × ${months}`;
+        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 % × ${months} mois + ${formatEuroNoSuffix(burn)} €/mois × ${months}`;
       } else {
-        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 %/mois × ${months} mois`;
+        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 % × ${months} mois`;
       }
     }
     document.getElementById('dailyRate').textContent = formatEuroNoSuffix(dailyRate);
