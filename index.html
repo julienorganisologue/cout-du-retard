@@ -1229,7 +1229,7 @@
   // SECTION "COMPRENDRE LA DYNAMIQUE DU RETARD"
   // ============================================================
 
-  const CALENDLY_URL = 'https://calendly.com/ton-lien-calendly';
+  const TYPEFORM_URL = 'https://form.typeform.com/to/IdCjICDR';
 
   const toggleDynamicsBtn = document.getElementById('toggleDynamics');
   const dynamicsContent = document.getElementById('dynamicsContent');
@@ -1370,17 +1370,20 @@
              mode: currentMode, gain, oneshot, burn };
   }
 
-  function buildCalendlyUrl(data) {
-    const url = new URL(CALENDLY_URL);
-    url.searchParams.set('email', data.email);
-    url.searchParams.set('a1', data.decision);
-    const gainLabel = data.mode === 'recurring'
-      ? `${data.gain} €/mois récurrent`
-      : `${data.oneshot} € one-shot`;
-    url.searchParams.set('a2',
-      `Coût actuel : ${data.totalCost} € · Retard : ${data.months} mois · ${gainLabel} · Charge équipe : ${data.utilization}% (${data.taches} tâches en attente)`
-    );
-    return url.toString();
+  function buildTypeformUrl(data) {
+    const params = new URLSearchParams({
+      email: data.email,
+      decision: data.decision,
+      mode_gain: data.mode === 'recurring' ? 'Recurrent' : 'One-shot',
+      gain_mensuel: data.gain,
+      valeur_oneshot: data.oneshot,
+      mois_retard: data.months,
+      cash_burn: data.burn,
+      cout_total: data.totalCost,
+      charge_equipe: data.utilization,
+      taches_attente: data.taches
+    });
+    return `${TYPEFORM_URL}#${params.toString()}`;
   }
 
   function isValidEmail(email) {
@@ -1402,7 +1405,7 @@
     ctaSubmit.textContent = 'Ouverture...';
 
     const data = collectCalculationData(email);
-    calendlyIframe.src = buildCalendlyUrl(data);
+    calendlyIframe.src = buildTypeformUrl(data);
     calendlyModal.classList.add('visible');
     document.body.style.overflow = 'hidden';
 
