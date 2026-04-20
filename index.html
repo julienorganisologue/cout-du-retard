@@ -547,6 +547,24 @@
     width: 100%;
     height: auto;
     display: block;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .chart-point {
+    cursor: grab;
+  }
+
+  .chart-point.dragging {
+    cursor: grabbing;
+  }
+
+  #utilizationSlider {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .chart-curve {
@@ -1031,15 +1049,13 @@
           <div class="utilization-control">
             <div class="utilization-label">Charge moyenne de votre équipe</div>
             <div class="utilization-value"><span id="utilizationValue">85</span>%</div>
-            <input type="range" id="utilizationSlider" min="50" max="98" step="1" value="85" />
-            <div class="range-labels">
-              <span>50%</span>
-              <span>98%</span>
-            </div>
+            <p class="dynamics-subtitle" style="margin-bottom: 0; font-size: 12px;">Cliquez ou glissez le point sur la courbe.</p>
           </div>
 
+          <input type="range" id="utilizationSlider" min="50" max="98" step="1" value="85" />
+
           <div class="chart-container">
-            <svg class="chart-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet">
+            <svg class="chart-svg" id="chartSvg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet">
               <line class="chart-axis" x1="40" y1="210" x2="390" y2="210" />
               <line class="chart-axis" x1="40" y1="20" x2="40" y2="210" />
               <line class="chart-axis" x1="40" y1="60" x2="390" y2="60" stroke-dasharray="2,4" opacity="0.4" />
@@ -1388,6 +1404,49 @@
   }
 
   utilizationSlider.addEventListener('input', updateDynamics);
+
+  // Rendre la courbe elle-même interactive : on drag/clique sur le SVG
+  // et ça pilote le slider (source de vérité) puis updateDynamics.
+  const chartSvg = document.getElementById('chartSvg');
+  const chartPoint = document.getElementById('chartPoint');
+  let isDragging = false;
+
+  function utilFromEvent(evt) {
+    const rect = chartSvg.getBoundingClientRect();
+    const viewboxX = ((evt.clientX - rect.left) / rect.width) * 400;
+    const clipped = Math.max(40, Math.min(390, viewboxX));
+    const util = 50 + ((clipped - 40) / 350) * 50;
+    return Math.max(50, Math.min(98, Math.round(util)));
+  }
+
+  function setUtilFromEvent(evt) {
+    const util = utilFromEvent(evt);
+    utilizationSlider.value = util;
+    updateDynamics();
+  }
+
+  chartSvg.addEventListener('pointerdown', (evt) => {
+    isDragging = true;
+    chartPoint.classList.add('dragging');
+    chartSvg.setPointerCapture(evt.pointerId);
+    setUtilFromEvent(evt);
+  });
+
+  chartSvg.addEventListener('pointermove', (evt) => {
+    if (!isDragging) return;
+    setUtilFromEvent(evt);
+  });
+
+  chartSvg.addEventListener('pointerup', (evt) => {
+    isDragging = false;
+    chartPoint.classList.remove('dragging');
+    try { chartSvg.releasePointerCapture(evt.pointerId); } catch (_) {}
+  });
+
+  chartSvg.addEventListener('pointercancel', () => {
+    isDragging = false;
+    chartPoint.classList.remove('dragging');
+  });
 
   // ============================================================
   // CTA : RÉSERVER UN APPEL (Calendly avec pré-remplissage)
