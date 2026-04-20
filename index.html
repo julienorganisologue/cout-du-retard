@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Combien vous coûte vraiment ce retard ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #0f172a;
+    --ink-soft: #64748b;
+    --accent: #dc2626;
+    --accent-soft: #fee2e2;
+    --line: #e2e8f0;
+    --card: #f8fafc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .inputs-column {
+    padding: 60px 48px 80px;
+  }
+
+  .result-column {
+    padding: 60px 48px 80px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--card);
+    border-left: 1px solid var(--line);
+  }
+
+  header {
+    margin-bottom: 40px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(32px, 3.6vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1.5px;
+    white-space: nowrap;
+  }
+
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid var(--line);
+    background: transparent;
+    padding: 6px 0;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+  }
+
+  .slider-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin: 8px 0 12px;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  .tip {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .mode-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 16px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 8px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .mode-btn.active {
+    background: var(--bg);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-weight: 600;
+  }
+
+  .mode-btn:hover:not(.active) {
+    color: var(--ink);
+  }
+
+  .toggle-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .toggle-btn.active {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .hidden-card {
+    display: none;
+  }
+
+  .hidden-card.visible {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-inner {
+    text-align: center;
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .result-decision {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .result-headline {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .big-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 96px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -4px;
+    line-height: 1;
+    margin: 16px 0 24px;
+    transition: all 0.2s;
+  }
+
+  .breakdown {
+    background: var(--accent-soft);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px auto 24px;
+    text-align: left;
+    font-size: 14px;
+    max-width: 360px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+  }
+
+  .breakdown-row:not(:last-child) {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .breakdown-label {
+    color: var(--ink-soft);
+  }
+
+  .breakdown-amount {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .daily-rate {
+    font-size: 15px;
+    margin: 20px 0 28px;
+    color: var(--ink);
+  }
+
+  .daily-rate strong {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+  }
+
+  .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--ink-soft);
+    margin: 28px 0 16px;
+  }
+
+  .perspectives {
+    text-align: left;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .perspective {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+
+  .perspective:last-child {
+    border-bottom: none;
+  }
+
+  .perspective-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .perspective-text {
+    line-height: 1.4;
+  }
+
+  .projection {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px auto;
+    max-width: 380px;
+  }
+
+  .projection-text {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .projection-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 2px;
+    letter-spacing: -1px;
+  }
+
+  .projection-extra {
+    font-size: 13px;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .projection-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  .share-btn {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    margin: 24px auto 0;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .share-btn:hover {
+    opacity: 0.85;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .inputs-column {
+      padding: 40px 20px 20px;
+    }
+    .result-column {
+      padding: 20px 20px 60px;
+      position: static;
+      height: auto;
+      overflow-y: visible;
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+    h1 {
+      white-space: normal;
+      font-size: 32px;
+      letter-spacing: -1px;
+    }
+    .big-number { font-size: 72px; }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 26px;
+      letter-spacing: -0.5px;
+    }
+    .big-number { font-size: 60px; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- COLONNE GAUCHE : INPUTS -->
+  <div class="inputs-column">
+
+    <header>
+      <h1>Combien vous coûte vraiment ce retard ?</h1>
+      <p class="subtitle">Bougez le curseur pour le savoir.</p>
+    </header>
+
+    <div class="card">
+      <div class="label">De quoi parle-t-on ?</div>
+      <input type="text" id="decision" value="Capturer et afficher mes témoignages clients" maxlength="60" />
+      <p class="tip">💡 Une décision reportée, un projet en retard, un recrutement qui traîne, un investissement hésitant…</p>
+    </div>
+
+    <div class="card">
+      <div class="label">Nature du gain attendu</div>
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="recurring">Récurrent (mensuel)</button>
+        <button class="mode-btn" data-mode="oneshot">One-shot (total)</button>
+      </div>
+
+      <div id="recurringMode">
+        <div class="slider-value"><span id="gainValue">5 000</span> €/mois</div>
+        <input type="range" id="gain" min="500" max="50000" step="500" value="5000" />
+        <div class="range-labels">
+          <span>500 €</span>
+          <span>50 000 €</span>
+        </div>
+        <p class="tip">💡 Valeur mensuelle une fois la décision implémentée / le projet terminé.</p>
+      </div>
+
+      <div id="oneshotMode" style="display:none;">
+        <div class="slider-value"><span id="oneshotValue">50 000</span> €</div>
+        <input type="range" id="oneshot" min="1000" max="500000" step="1000" value="50000" />
+        <div class="range-labels">
+          <span>1 000 €</span>
+          <span>500 000 €</span>
+        </div>
+        <p class="tip">💡 Valeur <strong>totale</strong> qui se débloquera à la livraison.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Depuis combien de mois ça traine ?</div>
+      <div class="slider-value"><span id="monthsValue">8</span> mois</div>
+      <input type="range" id="months" min="1" max="24" step="1" value="8" />
+      <div class="range-labels">
+        <span>1 mois</span>
+        <span>24 mois</span>
+      </div>
+      <p class="tip">💡 Depuis quand êtes-vous en retard ou en report ? Soyez honnête.</p>
+    </div>
+
+    <button class="toggle-btn" id="toggleBurn">
+      + C'est un projet déjà lancé ? Ajoutez les coûts qui tournent
+    </button>
+
+    <div class="card hidden-card" id="burnCard">
+      <div class="label">Coûts qui tournent pendant le retard</div>
+      <div class="slider-value"><span id="burnValue">0</span> €/mois</div>
+      <input type="range" id="burn" min="0" max="30000" step="500" value="0" />
+      <div class="range-labels">
+        <span>0 €</span>
+        <span>30 000 €</span>
+      </div>
+      <p class="tip">💡 Équipe mobilisée, infra déjà payée, frais fixes qui continuent pendant que le projet n'avance pas.</p>
+    </div>
+
+  </div>
+
+  <!-- COLONNE DROITE : RÉSULTAT STICKY -->
+  <div class="result-column">
+    <div class="result-inner">
+
+      <p class="result-decision">« <span id="decisionEcho">capturer et afficher mes témoignages clients</span> »</p>
+      <p class="result-headline">vous coûte déjà</p>
+
+      <div class="big-number" id="bigNumber">40 000 €</div>
+
+      <div class="breakdown" id="breakdown" style="display:none;">
+        <div class="breakdown-row">
+          <span class="breakdown-label">○ Valeur non créée</span>
+          <span class="breakdown-amount" id="valueNotCreated">40 000 €</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">● Cash qui brûle</span>
+          <span class="breakdown-amount" id="cashBurn">0 €</span>
+        </div>
+      </div>
+
+      <p class="daily-rate">
+        Et ça continue de vous coûter<br/>
+        <strong><span id="dailyRate">166</span> € par jour</strong>
+      </p>
+
+      <p class="section-title">Pour vous donner une idée</p>
+
+      <div class="perspectives">
+        <div class="perspective">
+          <span class="perspective-icon">🧑‍💼</span>
+          <span class="perspective-text">
+            Payer <strong id="persSalary">13</strong> mois de salaire à 2 500 € net
+          </span>
+        </div>
+        <div class="perspective">
+          <span class="perspective-icon">🏢</span>
+          <span class="perspective-text">
+            Couvrir <strong id="persRent">7</strong> mois de loyer d'un bureau pour 10 personnes
+          </span>
+        </div>
+        <div class="perspective">
+          <span class="perspective-icon">✈️</span>
+          <span class="perspective-text">
+            Offrir <strong id="persSeminar">40</strong> séminaires d'équipe à Lisbonne
+          </span>
+        </div>
+      </div>
+
+      <p class="section-title">Et si vous attendez encore</p>
+
+      <div class="projection">
+        <p class="projection-text">Si vous reportez encore <strong><span id="extraMonths">6</span> mois</strong> :</p>
+        <div class="projection-number" id="projectionTotal">70 000 €</div>
+        <p class="projection-extra">+ <span id="projectionExtra">30 000</span> € supplémentaires</p>
+        <input type="range" id="extraMonthsSlider" min="1" max="24" step="1" value="6" />
+        <div class="projection-slider-labels">
+          <span>+1 mois</span>
+          <span>+24 mois</span>
+        </div>
+      </div>
+
+      <button class="share-btn" id="shareBtn">📤 Partager ce calcul</button>
+
+      <footer>
+        Conçu par <a href="https://organisologie.com/a-propos/" target="_blank" rel="noopener" style="color:var(--ink); text-decoration: underline;">Julien Gueniat</a> — inspiré par la théorie du Cost of Delay<br/>
+        de Donald Reinertsen (The Principles of Product Development Flow)
+      </footer>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const decisionInput = document.getElementById('decision');
+  const gainSlider = document.getElementById('gain');
+  const oneshotSlider = document.getElementById('oneshot');
+  const monthsSlider = document.getElementById('months');
+  const burnSlider = document.getElementById('burn');
+  const extraSlider = document.getElementById('extraMonthsSlider');
+  const toggleBurn = document.getElementById('toggleBurn');
+  const burnCard = document.getElementById('burnCard');
+  const breakdownBox = document.getElementById('breakdown');
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  const recurringMode = document.getElementById('recurringMode');
+  const oneshotMode = document.getElementById('oneshotMode');
+
+  let currentMode = 'recurring';
+  const ONESHOT_RATE = 0.01;
+
+  const formatEuro = (n) => Math.round(n).toLocaleString('fr-FR').replace(/,/g, ' ') + ' €';
+  const formatEuroNoSuffix = (n) => Math.round(n).toLocaleString('fr-FR').replace(/,/g, ' ');
+
+  function update() {
+    const decision = decisionInput.value.trim() || 'cette décision';
+    const gain = parseInt(gainSlider.value);
+    const oneshot = parseInt(oneshotSlider.value);
+    const months = parseInt(monthsSlider.value);
+    const burn = parseInt(burnSlider.value);
+    const extraMonths = parseInt(extraSlider.value);
+
+    document.getElementById('gainValue').textContent = formatEuroNoSuffix(gain);
+    document.getElementById('oneshotValue').textContent = formatEuroNoSuffix(oneshot);
+    document.getElementById('monthsValue').textContent = months;
+    document.getElementById('burnValue').textContent = formatEuroNoSuffix(burn);
+    document.getElementById('extraMonths').textContent = extraMonths;
+
+    let valueNotCreated, monthlyValueLoss;
+    if (currentMode === 'recurring') {
+      valueNotCreated = gain * months;
+      monthlyValueLoss = gain;
+    } else {
+      valueNotCreated = oneshot * ONESHOT_RATE * months;
+      monthlyValueLoss = oneshot * ONESHOT_RATE;
+    }
+
+    const cashBurn = burn * months;
+    const totalCost = valueNotCreated + cashBurn;
+    const dailyRate = Math.round((monthlyValueLoss + burn) / 30);
+
+    const projectionTotal = totalCost + ((monthlyValueLoss + burn) * extraMonths);
+    const projectionExtra = projectionTotal - totalCost;
+
+    document.getElementById('decisionEcho').textContent = decision.toLowerCase();
+    document.getElementById('bigNumber').textContent = formatEuro(totalCost);
+    document.getElementById('dailyRate').textContent = formatEuroNoSuffix(dailyRate);
+    document.getElementById('projectionTotal').textContent = formatEuro(projectionTotal);
+    document.getElementById('projectionExtra').textContent = formatEuroNoSuffix(projectionExtra);
+
+    if (burn > 0) {
+      breakdownBox.style.display = 'block';
+      document.getElementById('valueNotCreated').textContent = formatEuro(valueNotCreated);
+      document.getElementById('cashBurn').textContent = formatEuro(cashBurn);
+    } else {
+      breakdownBox.style.display = 'none';
+    }
+
+    document.getElementById('persSalary').textContent = Math.max(1, Math.round(totalCost / 2500));
+    document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
+    document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
+  }
+
+  decisionInput.addEventListener('input', update);
+  gainSlider.addEventListener('input', update);
+  oneshotSlider.addEventListener('input', update);
+  monthsSlider.addEventListener('input', update);
+  burnSlider.addEventListener('input', update);
+  extraSlider.addEventListener('input', update);
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      modeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMode = btn.dataset.mode;
+      if (currentMode === 'recurring') {
+        recurringMode.style.display = 'block';
+        oneshotMode.style.display = 'none';
+      } else {
+        recurringMode.style.display = 'none';
+        oneshotMode.style.display = 'block';
+      }
+      update();
+    });
+  });
+
+  toggleBurn.addEventListener('click', () => {
+    burnCard.classList.toggle('visible');
+    toggleBurn.classList.toggle('active');
+    if (burnCard.classList.contains('visible')) {
+      toggleBurn.textContent = '− Masquer les coûts qui tournent';
+    } else {
+      toggleBurn.textContent = "+ C'est un projet déjà lancé ? Ajoutez les coûts qui tournent";
+      burnSlider.value = 0;
+      update();
+    }
+  });
+
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const decision = decisionInput.value.trim() || 'une décision';
+    const gain = parseInt(gainSlider.value);
+    const oneshot = parseInt(oneshotSlider.value);
+    const months = parseInt(monthsSlider.value);
+    const burn = parseInt(burnSlider.value);
+
+    let valueNotCreated;
+    if (currentMode === 'recurring') {
+      valueNotCreated = gain * months;
+    } else {
+      valueNotCreated = oneshot * ONESHOT_RATE * months;
+    }
+    const total = formatEuro(valueNotCreated + burn * months);
+    const text = `« ${decision} » me coûte déjà ${total} dans ma boîte. J'ai calculé avec cet outil. Et vous ?`;
+
+    if (navigator.share) {
+      navigator.share({ title: 'Combien vous coûte ce retard ?', text: text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
+        alert('Texte copié dans le presse-papier !');
+      });
+    }
+  });
+
+  update();
+</script>
+
+</body>
+</html>
