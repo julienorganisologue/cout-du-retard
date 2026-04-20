@@ -92,7 +92,7 @@
     font-weight: 600;
   }
 
-  input[type="text"] {
+  input[type="text"], textarea#decision {
     width: 100%;
     border: none;
     border-bottom: 2px solid var(--line);
@@ -103,9 +103,14 @@
     font-weight: 500;
     color: var(--ink);
     transition: border-color 0.2s;
+    display: block;
+    resize: none;
+    overflow: hidden;
+    line-height: 1.35;
+    word-wrap: break-word;
   }
 
-  input[type="text"]:focus {
+  input[type="text"]:focus, textarea#decision:focus {
     outline: none;
     border-bottom-color: var(--accent);
   }
@@ -482,7 +487,7 @@
 
     <div class="card">
       <div class="label">De quoi parle-t-on ?</div>
-      <input type="text" id="decision" value="Capturer et afficher mes témoignages clients" maxlength="60" />
+      <textarea id="decision" maxlength="60" rows="1">Capturer et afficher mes témoignages clients</textarea>
       <p class="tip">💡 Une décision reportée, un projet en retard, un recrutement qui traîne, un investissement hésitant…</p>
     </div>
 
@@ -684,7 +689,11 @@
     document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
   }
 
-  decisionInput.addEventListener('input', update);
+  function autoResizeDecision() {
+    decisionInput.style.height = 'auto';
+    decisionInput.style.height = decisionInput.scrollHeight + 'px';
+  }
+  decisionInput.addEventListener('input', () => { autoResizeDecision(); update(); });
   gainSlider.addEventListener('input', update);
   oneshotSlider.addEventListener('input', update);
   monthsSlider.addEventListener('input', update);
@@ -744,6 +753,7 @@
     }
   });
 
+  autoResizeDecision();
   update();
 </script>
 
