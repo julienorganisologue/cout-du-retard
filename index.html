@@ -631,6 +631,119 @@
     margin-top: 4px;
   }
 
+  /* === TOGGLE "POURQUOI ÇA EXPLOSE ?" === */
+  .why-section {
+    margin: 8px 0 18px;
+    text-align: center;
+  }
+
+  .why-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .why-toggle:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .why-toggle.active {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  .why-content {
+    display: none;
+    margin-top: 14px;
+    padding: 18px;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    text-align: left;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .why-content.visible { display: block; }
+
+  .why-intro {
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .why-intro strong { color: var(--accent); font-weight: 700; }
+
+  .why-analogy {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  .why-analogy-title {
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .why-mechanism { margin: 14px 0; }
+
+  .why-mechanism-step {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    align-items: flex-start;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .why-step-number {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .why-step-text strong { color: var(--ink); font-weight: 600; }
+
+  .why-conclusion {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-radius: 10px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .why-conclusion strong { color: var(--accent); font-weight: 700; }
+
   .insights {
     background: var(--card);
     border: 1px solid var(--line);
@@ -1081,6 +1194,79 @@
             <div class="queue-unit">en moyenne, en permanence</div>
           </div>
 
+          <div class="why-section">
+            <button class="why-toggle" id="whyToggle">
+              <span>🤔</span>
+              <span id="whyToggleLabel">Pourquoi ça explose ?</span>
+            </button>
+
+            <div class="why-content" id="whyContent">
+              <p class="why-intro">
+                Vos équipes sont <strong>humaines</strong>, pas des machines.
+                Quand une ressource est occupée à 90 %, chaque nouvelle demande trouve
+                la ressource déjà prise <strong>9 fois sur 10</strong>. Elle attend.
+                Et plus il y a de demandes qui attendent, <strong>plus chaque nouvelle
+                demande attend longtemps</strong>. C'est la théorie des files d'attente.
+                Ce n'est pas un défaut d'organisation, c'est mathématique.
+              </p>
+
+              <div class="why-analogy">
+                <div class="why-analogy-title">🛣️ L'analogie de l'autoroute</div>
+                Une autoroute à <strong>60 % de charge</strong> : tout le monde roule à 130.
+                À <strong>80 % de charge</strong> : ralentissements, vitesse moyenne 90.
+                À <strong>95 % de charge</strong> : bouchon total, vitesse moyenne 15.
+                Il n'y a eu que 15 % de voitures en plus, mais la vitesse s'est effondrée.
+                <br/><br/>
+                <strong>Votre entreprise fonctionne exactement pareil.</strong> Les demandes
+                clients, les projets internes, les décisions à prendre circulent sur une
+                "autoroute" interne. Quand votre capacité approche 100 %, tout se bloque.
+              </div>
+
+              <div class="why-mechanism">
+                <p style="font-weight: 700; margin-bottom: 8px; font-size: 13px;">
+                  Le mécanisme en 3 étapes :
+                </p>
+
+                <div class="why-mechanism-step">
+                  <div class="why-step-number">1</div>
+                  <div class="why-step-text">
+                    <strong>La variabilité existe toujours.</strong> Certaines tâches prennent
+                    1 heure, d'autres 10. Un client urgent arrive sans prévenir. Un bug bloque
+                    tout. Cette variabilité est inévitable dans le travail intellectuel.
+                  </div>
+                </div>
+
+                <div class="why-mechanism-step">
+                  <div class="why-step-number">2</div>
+                  <div class="why-step-text">
+                    <strong>Plus la charge monte, moins de marge pour absorber les pics.</strong>
+                    À 60 % de charge, une tâche imprévue se glisse dans les 40 % libres.
+                    À 95 %, elle attend derrière les autres. Cette attente devient exponentielle
+                    parce que chaque pic retarde aussi les suivants.
+                  </div>
+                </div>
+
+                <div class="why-mechanism-step">
+                  <div class="why-step-number">3</div>
+                  <div class="why-step-text">
+                    <strong>Les files s'empilent, invisibles.</strong> Dans une usine, on voit
+                    les stocks s'accumuler. Dans le travail intellectuel, les files sont dans
+                    les boîtes mails, les backlogs, les "en attente de validation". Invisibles
+                    mais bien réelles. Et elles grossissent exponentiellement avec la charge.
+                  </div>
+                </div>
+              </div>
+
+              <div class="why-conclusion">
+                <strong>Conclusion contre-intuitive :</strong> "faire travailler les gens à fond"
+                ne produit pas plus de valeur. Au contraire, ça crée des files d'attente géantes
+                qui ralentissent tout le système. Les meilleures entreprises laissent
+                <strong>20 à 30 % de capacité libre</strong> pour maintenir un flux rapide.
+                Ce n'est pas du gaspillage, c'est de la vitesse.
+              </div>
+            </div>
+          </div>
+
           <div class="insights">
             <div class="insight-line">
               <span class="insight-arrow">→</span>
@@ -1404,6 +1590,19 @@
   }
 
   utilizationSlider.addEventListener('input', updateDynamics);
+
+  // Toggle "Pourquoi ça explose ?"
+  const whyToggle = document.getElementById('whyToggle');
+  const whyContent = document.getElementById('whyContent');
+  const whyToggleLabel = document.getElementById('whyToggleLabel');
+
+  whyToggle.addEventListener('click', () => {
+    whyContent.classList.toggle('visible');
+    whyToggle.classList.toggle('active');
+    whyToggleLabel.textContent = whyContent.classList.contains('visible')
+      ? "Masquer l'explication"
+      : 'Pourquoi ça explose ?';
+  });
 
   // Rendre la courbe elle-même interactive : on drag/clique sur le SVG
   // et ça pilote le slider (source de vérité) puis updateDynamics.
