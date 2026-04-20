@@ -283,8 +283,28 @@
     color: var(--accent);
     letter-spacing: -3px;
     line-height: 1;
-    margin: 8px 0 12px;
+    margin: 8px 0 8px;
     transition: all 0.2s;
+  }
+
+  .formula-explain {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0 auto 14px;
+    line-height: 1.5;
+    max-width: 380px;
+    text-align: center;
+  }
+
+  .formula-explain .formula {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--bg);
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid var(--line);
   }
 
   .breakdown {
@@ -879,8 +899,8 @@
     <div class="card">
       <div class="label">Nature du gain attendu</div>
       <div class="mode-toggle">
-        <button class="mode-btn active" data-mode="recurring">Récurrent (mensuel)</button>
-        <button class="mode-btn" data-mode="oneshot">One-shot (total)</button>
+        <button class="mode-btn active" data-mode="recurring">Se répète chaque mois</button>
+        <button class="mode-btn" data-mode="oneshot">Gain unique (un bloc)</button>
       </div>
 
       <div id="recurringMode">
@@ -890,7 +910,7 @@
           <span>500 €</span>
           <span>50 000 €</span>
         </div>
-        <p class="tip">💡 Valeur mensuelle une fois la décision implémentée / le projet terminé.</p>
+        <p class="tip">💡 Pour un gain qui se renouvelle chaque mois : un commercial qui ramène du CA, un outil qui fait gagner du temps chaque semaine, un service qui génère du MRR, des témoignages qui améliorent la conversion…</p>
       </div>
 
       <div id="oneshotMode" style="display:none;">
@@ -900,7 +920,7 @@
           <span>1 000 €</span>
           <span>500 000 €</span>
         </div>
-        <p class="tip">💡 Valeur <strong>totale</strong> qui se débloquera à la livraison.</p>
+        <p class="tip">💡 Pour une valeur qui se débloque en une seule fois : une subvention à décrocher, une amende à éviter, la vente d'un actif, une mise aux normes obligatoire…</p>
       </div>
     </div>
 
@@ -940,6 +960,10 @@
       <p class="result-headline">vous coûte déjà</p>
 
       <div class="big-number" id="bigNumber">40 000 €</div>
+
+      <p class="formula-explain">
+        <span class="formula" id="formulaText">2 500 €/mois × 8 mois</span>
+      </p>
 
       <div class="breakdown" id="breakdown" style="display:none;">
         <div class="breakdown-row">
@@ -1155,6 +1179,21 @@
 
     document.getElementById('decisionEcho').textContent = decision.toLowerCase();
     document.getElementById('bigNumber').textContent = formatEuro(totalCost);
+
+    const formulaText = document.getElementById('formulaText');
+    if (currentMode === 'recurring') {
+      if (burn > 0) {
+        formulaText.innerHTML = `(${formatEuroNoSuffix(gain)} + ${formatEuroNoSuffix(burn)}) €/mois × ${months} mois`;
+      } else {
+        formulaText.innerHTML = `${formatEuroNoSuffix(gain)} €/mois × ${months} mois`;
+      }
+    } else {
+      if (burn > 0) {
+        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 %/mois × ${months} mois + ${formatEuroNoSuffix(burn)} €/mois × ${months}`;
+      } else {
+        formulaText.innerHTML = `${formatEuroNoSuffix(oneshot)} € × 1 %/mois × ${months} mois`;
+      }
+    }
     document.getElementById('dailyRate').textContent = formatEuroNoSuffix(dailyRate);
     document.getElementById('projectionTotal').textContent = formatEuro(projectionTotal);
     document.getElementById('projectionExtra').textContent = formatEuroNoSuffix(projectionExtra);
