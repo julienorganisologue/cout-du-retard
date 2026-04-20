@@ -115,6 +115,12 @@
     border-bottom-color: var(--accent);
   }
 
+  textarea#decision::placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+    opacity: 0.7;
+  }
+
   .slider-value {
     font-family: 'Inter', sans-serif;
     font-size: 20px;
@@ -487,7 +493,7 @@
 
     <div class="card">
       <div class="label">De quoi parle-t-on ?</div>
-      <textarea id="decision" maxlength="60" rows="1">Capturer et afficher mes témoignages clients</textarea>
+      <textarea id="decision" maxlength="60" rows="1" placeholder="Ex : Capturer et afficher mes témoignages clients"></textarea>
       <p class="tip">💡 Une décision reportée, un projet en retard, un recrutement qui traîne, un investissement hésitant…</p>
     </div>
 
@@ -641,7 +647,7 @@
   const formatEuroNoSuffix = (n) => Math.round(n).toLocaleString('fr-FR').replace(/,/g, ' ');
 
   function update() {
-    const decision = decisionInput.value.trim() || 'cette décision';
+    const decision = decisionInput.value.trim() || 'Capturer et afficher mes témoignages clients';
     const gain = parseInt(gainSlider.value);
     const oneshot = parseInt(oneshotSlider.value);
     const months = parseInt(monthsSlider.value);
@@ -729,7 +735,7 @@
   });
 
   document.getElementById('shareBtn').addEventListener('click', () => {
-    const decision = decisionInput.value.trim() || 'une décision';
+    const decision = decisionInput.value.trim() || 'Capturer et afficher mes témoignages clients';
     const gain = parseInt(gainSlider.value);
     const oneshot = parseInt(oneshotSlider.value);
     const months = parseInt(monthsSlider.value);
