@@ -429,6 +429,371 @@
     opacity: 0.85;
   }
 
+  /* === SECTION "COMPRENDRE LA DYNAMIQUE" === */
+  .dynamics-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .dynamics-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .dynamics-cta:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  .dynamics-content {
+    display: none;
+    margin-top: 20px;
+    text-align: left;
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .dynamics-content.visible {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dynamics-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+
+  .dynamics-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .utilization-control {
+    margin-bottom: 16px;
+  }
+
+  .utilization-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .utilization-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin: 2px 0 10px;
+    color: var(--ink);
+    letter-spacing: -1px;
+  }
+
+  .chart-container {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 12px 10px;
+    margin: 14px 0 18px;
+  }
+
+  .chart-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .chart-curve {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 2;
+    opacity: 0.3;
+  }
+
+  .chart-curve-active {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3;
+    transition: all 0.2s ease-out;
+  }
+
+  .chart-point {
+    fill: var(--accent);
+    stroke: #fff;
+    stroke-width: 3;
+    filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.4));
+    transition: all 0.2s ease-out;
+  }
+
+  .chart-axis {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .chart-label {
+    fill: var(--ink-soft);
+    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .queue-explosion {
+    text-align: center;
+    margin: 20px 0 18px;
+  }
+
+  .queue-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .queue-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -3px;
+    margin: 6px 0;
+    transition: all 0.15s ease-out;
+    display: inline-block;
+  }
+
+  .queue-unit {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .insights {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .insight-line {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 4px 0;
+  }
+
+  .insight-arrow {
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .insight-text strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .zone-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+  }
+
+  .zone-safe { background: #dcfce7; color: #166534; }
+  .zone-warning { background: #fef3c7; color: #92400e; }
+  .zone-danger { background: var(--accent-soft); color: var(--accent); }
+
+  .cta-section {
+    margin-top: 24px;
+    padding: 22px 20px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .cta-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .cta-email-row {
+    display: flex;
+    gap: 8px;
+    max-width: 380px;
+    margin: 0 auto 10px;
+  }
+
+  .cta-email-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .cta-email-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .cta-btn {
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .cta-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+  }
+
+  .cta-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .cta-hint {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .cta-error {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 6px;
+    display: none;
+  }
+
+  .cta-error.visible { display: block; }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+    animation: fadeInOverlay 0.2s ease-out;
+  }
+
+  @keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1000px;
+    height: 90vh;
+    max-height: 780px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0,0,0,0.06);
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .modal-close:hover { background: rgba(0,0,0,0.12); }
+
+  .calendly-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
   footer {
     text-align: center;
     margin-top: 12px;
@@ -616,6 +981,104 @@
 
       <button class="share-btn" id="shareBtn">📤 Partager ce calcul</button>
 
+      <div class="dynamics-section">
+        <button class="dynamics-cta" id="toggleDynamics">
+          Comprendre la dynamique du retard →
+        </button>
+
+        <div class="dynamics-content" id="dynamicsContent">
+          <p class="dynamics-title">Pourquoi vos retards s'accumulent ?</p>
+          <p class="dynamics-subtitle">Placez-vous sur la courbe. Le chiffre parle.</p>
+
+          <div class="utilization-control">
+            <div class="utilization-label">Charge moyenne de votre équipe</div>
+            <div class="utilization-value"><span id="utilizationValue">85</span>%</div>
+            <input type="range" id="utilizationSlider" min="50" max="98" step="1" value="85" />
+            <div class="range-labels">
+              <span>50%</span>
+              <span>98%</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <svg class="chart-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet">
+              <line class="chart-axis" x1="40" y1="210" x2="390" y2="210" />
+              <line class="chart-axis" x1="40" y1="20" x2="40" y2="210" />
+              <line class="chart-axis" x1="40" y1="60" x2="390" y2="60" stroke-dasharray="2,4" opacity="0.4" />
+              <line class="chart-axis" x1="40" y1="120" x2="390" y2="120" stroke-dasharray="2,4" opacity="0.4" />
+              <line class="chart-axis" x1="40" y1="170" x2="390" y2="170" stroke-dasharray="2,4" opacity="0.4" />
+              <path class="chart-curve" id="chartCurveFull" />
+              <path class="chart-curve-active" id="chartCurveActive" />
+              <circle class="chart-point" id="chartPoint" cx="270" cy="150" r="8" />
+              <text class="chart-label" x="40" y="225" text-anchor="start">50%</text>
+              <text class="chart-label" x="215" y="225" text-anchor="middle">75%</text>
+              <text class="chart-label" x="390" y="225" text-anchor="end">100%</text>
+              <text class="chart-label" x="35" y="215" text-anchor="end">0</text>
+              <text class="chart-label" x="35" y="175" text-anchor="end">5</text>
+              <text class="chart-label" x="35" y="125" text-anchor="end">20</text>
+              <text class="chart-label" x="35" y="65" text-anchor="end">50+</text>
+              <text class="chart-label" x="215" y="240" text-anchor="middle" style="font-weight: 600;">Charge (%)</text>
+            </svg>
+          </div>
+
+          <div class="queue-explosion">
+            <div class="queue-label">Tâches en attente</div>
+            <div class="queue-number" id="queueNumber" style="font-size: 80px;">6</div>
+            <div class="queue-unit">en moyenne, en permanence</div>
+          </div>
+
+          <div class="insights">
+            <div class="insight-line">
+              <span class="insight-arrow">→</span>
+              <span class="insight-text">À <strong><span id="insightUtil">85</span>%</strong> de charge, vos délais sont multipliés par <strong><span id="insightMultiplier">7</span></strong> par rapport au temps de travail réel.</span>
+            </div>
+            <div class="insight-line">
+              <span class="insight-arrow">→</span>
+              <span class="insight-text">Chaque <strong>1% de charge en plus</strong> aggrave exponentiellement la situation.</span>
+            </div>
+            <div class="insight-line">
+              <span class="insight-arrow">→</span>
+              <span class="insight-text" id="insightZone">
+                Votre équipe est dans la zone <strong>à risque</strong>.
+              </span>
+            </div>
+            <div style="text-align: center;">
+              <span class="zone-badge" id="zoneBadge">Zone à risque</span>
+            </div>
+          </div>
+
+          <div class="insights" style="background: #fafafa; border: 1px dashed var(--line);">
+            <p style="font-weight: 600; margin-bottom: 6px;">💡 L'insight contre-intuitif</p>
+            <p style="color: var(--ink-soft);">
+              Pour réduire vos délais sans embaucher, il suffit parfois de faire
+              <strong style="color: var(--ink);">redescendre la charge de 95% à 80%</strong>.
+              L'effet sur les files d'attente est immédiat et massif. La "capacité inutilisée"
+              n'est pas du gaspillage — c'est ce qui rend votre système rapide et prévisible.
+            </p>
+          </div>
+
+          <div class="cta-section">
+            <p class="cta-title">Vous savez combien ça coûte. Vous savez pourquoi.<br/>Maintenant, on fait quoi ?</p>
+            <p class="cta-subtitle">20 minutes avec Julien pour comprendre comment réduire ce coût dans votre contexte.</p>
+
+            <form id="ctaForm" class="cta-email-row">
+              <input type="email" id="ctaEmail" class="cta-email-input" placeholder="votre@email.fr" required />
+              <button type="submit" class="cta-btn" id="ctaSubmit">Réserver un appel →</button>
+            </form>
+            <p class="cta-hint">Gratuit · Sans engagement · Sous 48h</p>
+            <p class="cta-error" id="ctaError">Merci de saisir un email valide.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-overlay" id="calendlyModal">
+        <div class="modal-content">
+          <button class="modal-close" id="modalClose">×</button>
+          <iframe class="calendly-iframe" id="calendlyIframe" src="about:blank" title="Prendre rendez-vous"></iframe>
+        </div>
+      </div>
+
       <footer>
         Conçu par <a href="https://organisologie.com/a-propos/" target="_blank" rel="noopener" style="color:var(--ink); text-decoration: underline;">Julien Gueniat</a> — inspiré par la théorie du Cost of Delay<br/>
         de Donald Reinertsen (The Principles of Product Development Flow)
@@ -761,6 +1224,209 @@
 
   autoResizeDecision();
   update();
+
+  // ============================================================
+  // SECTION "COMPRENDRE LA DYNAMIQUE DU RETARD"
+  // ============================================================
+
+  const CALENDLY_URL = 'https://calendly.com/ton-lien-calendly';
+
+  const toggleDynamicsBtn = document.getElementById('toggleDynamics');
+  const dynamicsContent = document.getElementById('dynamicsContent');
+  const utilizationSlider = document.getElementById('utilizationSlider');
+
+  toggleDynamicsBtn.addEventListener('click', () => {
+    dynamicsContent.classList.toggle('visible');
+    if (dynamicsContent.classList.contains('visible')) {
+      toggleDynamicsBtn.textContent = 'Masquer ↑';
+      updateDynamics();
+      setTimeout(() => {
+        dynamicsContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    } else {
+      toggleDynamicsBtn.textContent = 'Comprendre la dynamique du retard →';
+    }
+  });
+
+  function queueSize(rhoPercent) {
+    const rho = rhoPercent / 100;
+    if (rho >= 1) return 999;
+    return (rho * rho) / (1 - rho);
+  }
+
+  function cycleMultiplier(rhoPercent) {
+    const rho = rhoPercent / 100;
+    if (rho >= 1) return 999;
+    return 1 / (1 - rho);
+  }
+
+  function queueToY(q) {
+    const capped = Math.min(q, 100);
+    const normalized = Math.log(1 + capped) / Math.log(1 + 100);
+    return 210 - normalized * 185;
+  }
+
+  function rhoToX(rhoPercent) {
+    return 40 + ((rhoPercent - 50) / 50) * 350;
+  }
+
+  function buildCurvePath(fromRho, toRho) {
+    let path = '';
+    const step = 0.5;
+    for (let rho = fromRho; rho <= toRho; rho += step) {
+      const x = rhoToX(rho);
+      const y = queueToY(queueSize(rho));
+      if (rho === fromRho) {
+        path += `M ${x.toFixed(1)} ${y.toFixed(1)}`;
+      } else {
+        path += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+      }
+    }
+    return path;
+  }
+
+  document.getElementById('chartCurveFull').setAttribute('d', buildCurvePath(50, 98));
+
+  function updateDynamics() {
+    const util = parseInt(utilizationSlider.value);
+    const q = queueSize(util);
+    const mult = cycleMultiplier(util);
+
+    document.getElementById('utilizationValue').textContent = util;
+    document.getElementById('insightUtil').textContent = util;
+    document.getElementById('insightMultiplier').textContent = Math.round(mult);
+
+    const queueNum = document.getElementById('queueNumber');
+    queueNum.textContent = q < 10 ? q.toFixed(1) : Math.round(q);
+
+    let fontSize;
+    if (util < 70) fontSize = 64;
+    else if (util < 80) fontSize = 80;
+    else if (util < 88) fontSize = 100;
+    else if (util < 93) fontSize = 120;
+    else if (util < 96) fontSize = 140;
+    else fontSize = 160;
+    queueNum.style.fontSize = fontSize + 'px';
+
+    const x = rhoToX(util);
+    const y = queueToY(q);
+    const point = document.getElementById('chartPoint');
+    point.setAttribute('cx', x);
+    point.setAttribute('cy', y);
+    point.setAttribute('r', util < 80 ? 7 : util < 90 ? 9 : util < 95 ? 11 : 13);
+
+    document.getElementById('chartCurveActive').setAttribute('d', buildCurvePath(50, util));
+
+    const badge = document.getElementById('zoneBadge');
+    const zoneInsight = document.getElementById('insightZone');
+    if (util < 75) {
+      badge.textContent = 'Zone confortable';
+      badge.className = 'zone-badge zone-safe';
+      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone confortable</strong>. Vos délais sont maîtrisés.';
+    } else if (util < 88) {
+      badge.textContent = 'Zone de tension';
+      badge.className = 'zone-badge zone-warning';
+      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone de tension</strong>. Les délais commencent à déraper.';
+    } else {
+      badge.textContent = 'Zone critique';
+      badge.className = 'zone-badge zone-danger';
+      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone critique</strong>. Chaque nouvelle demande attend longtemps.';
+    }
+  }
+
+  utilizationSlider.addEventListener('input', updateDynamics);
+
+  // ============================================================
+  // CTA : RÉSERVER UN APPEL (Calendly avec pré-remplissage)
+  // ============================================================
+
+  const ctaForm = document.getElementById('ctaForm');
+  const ctaEmail = document.getElementById('ctaEmail');
+  const ctaSubmit = document.getElementById('ctaSubmit');
+  const ctaError = document.getElementById('ctaError');
+  const calendlyModal = document.getElementById('calendlyModal');
+  const calendlyIframe = document.getElementById('calendlyIframe');
+  const modalClose = document.getElementById('modalClose');
+
+  function collectCalculationData(email) {
+    const decision = decisionInput.value.trim() || 'Non renseigné';
+    const gain = parseInt(gainSlider.value);
+    const oneshot = parseInt(oneshotSlider.value);
+    const months = parseInt(monthsSlider.value);
+    const burn = parseInt(burnSlider.value);
+    const utilization = parseInt(utilizationSlider.value);
+
+    let valueNotCreated;
+    if (currentMode === 'recurring') {
+      valueNotCreated = gain * months;
+    } else {
+      valueNotCreated = oneshot * ONESHOT_RATE * months;
+    }
+    const totalCost = Math.round(valueNotCreated + (burn * months));
+    const q = queueSize(utilization);
+    const taches = q < 10 ? q.toFixed(1) : Math.round(q);
+
+    return { email, decision, months, totalCost, utilization, taches,
+             mode: currentMode, gain, oneshot, burn };
+  }
+
+  function buildCalendlyUrl(data) {
+    const url = new URL(CALENDLY_URL);
+    url.searchParams.set('email', data.email);
+    url.searchParams.set('a1', data.decision);
+    const gainLabel = data.mode === 'recurring'
+      ? `${data.gain} €/mois récurrent`
+      : `${data.oneshot} € one-shot`;
+    url.searchParams.set('a2',
+      `Coût actuel : ${data.totalCost} € · Retard : ${data.months} mois · ${gainLabel} · Charge équipe : ${data.utilization}% (${data.taches} tâches en attente)`
+    );
+    return url.toString();
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  ctaForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = ctaEmail.value.trim();
+
+    if (!isValidEmail(email)) {
+      ctaError.classList.add('visible');
+      ctaEmail.focus();
+      return;
+    }
+
+    ctaError.classList.remove('visible');
+    ctaSubmit.disabled = true;
+    ctaSubmit.textContent = 'Ouverture...';
+
+    const data = collectCalculationData(email);
+    calendlyIframe.src = buildCalendlyUrl(data);
+    calendlyModal.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      ctaSubmit.disabled = false;
+      ctaSubmit.textContent = 'Réserver un appel →';
+    }, 1000);
+  });
+
+  function closeModal() {
+    calendlyModal.classList.remove('visible');
+    document.body.style.overflow = '';
+    setTimeout(() => { calendlyIframe.src = 'about:blank'; }, 300);
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  calendlyModal.addEventListener('click', (e) => {
+    if (e.target === calendlyModal) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && calendlyModal.classList.contains('visible')) {
+      closeModal();
+    }
+  });
 </script>
 
 </body>
