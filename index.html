@@ -1116,21 +1116,21 @@
 
       <div class="perspectives">
         <div class="perspective">
-          <span class="perspective-icon">🧑‍💼</span>
+          <span class="perspective-icon">🍕</span>
           <span class="perspective-text">
-            Payer <strong id="persSalary">13</strong> mois de salaire à 2 500 € net
+            <strong id="persPizza">1 481</strong> pizzas pour fêter la libération de ce retard
           </span>
         </div>
         <div class="perspective">
-          <span class="perspective-icon">🏢</span>
+          <span class="perspective-icon">🐑</span>
           <span class="perspective-text">
-            Couvrir <strong id="persRent">7</strong> mois de loyer d'un bureau pour 10 personnes
+            <strong id="persSheep">266</strong> moutons pour élever la prochaine génération d'employés zen
           </span>
         </div>
         <div class="perspective">
-          <span class="perspective-icon">✈️</span>
+          <span class="perspective-icon">🚀</span>
           <span class="perspective-text">
-            Offrir <strong id="persSeminar">40</strong> séminaires d'équipe à Lisbonne
+            <strong id="persRocket">8 %</strong> d'un ticket dans l'espace avec Blue Origin
           </span>
         </div>
       </div>
@@ -1408,9 +1408,26 @@
       breakdownBox.style.display = 'none';
     }
 
-    document.getElementById('persSalary').textContent = Math.max(1, Math.round(totalCost / 2500));
-    document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
-    document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
+    // Pizzas (27 € l'unité)
+    document.getElementById('persPizza').textContent =
+      Math.max(1, Math.round(totalCost / 27)).toLocaleString('fr-FR').replace(/,/g, ' ');
+
+    // Moutons (150 € l'unité)
+    document.getElementById('persSheep').textContent =
+      Math.max(1, Math.round(totalCost / 150)).toLocaleString('fr-FR').replace(/,/g, ' ');
+
+    // Ticket Blue Origin (500 000 €) — affichage en % ou en tickets
+    const rocketPercent = (totalCost / 500000) * 100;
+    let rocketDisplay;
+    if (rocketPercent < 1) {
+      rocketDisplay = 'Moins de 1 %';
+    } else if (rocketPercent >= 100) {
+      const tickets = Math.floor(rocketPercent / 100);
+      rocketDisplay = tickets + ' ticket' + (tickets >= 2 ? 's' : '');
+    } else {
+      rocketDisplay = Math.round(rocketPercent) + ' %';
+    }
+    document.getElementById('persRocket').textContent = rocketDisplay;
   }
 
   function autoResizeDecision() {
