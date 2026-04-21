@@ -1116,9 +1116,9 @@
 
       <div class="perspectives">
         <div class="perspective">
-          <span class="perspective-icon">🧑‍💼</span>
+          <span class="perspective-icon">🍕</span>
           <span class="perspective-text">
-            Payer <strong id="persSalary">13</strong> mois de salaire à 2 500 € net
+            <strong id="persPizza">1 481</strong> pizzas pour fêter la libération de ce retard
           </span>
         </div>
         <div class="perspective">
@@ -1131,12 +1131,6 @@
           <span class="perspective-icon">✈️</span>
           <span class="perspective-text">
             Offrir <strong id="persSeminar">40</strong> séminaires d'équipe à Lisbonne
-          </span>
-        </div>
-        <div class="perspective">
-          <span class="perspective-icon">🍕</span>
-          <span class="perspective-text">
-            <strong id="persPizza">1 481</strong> pizzas pour fêter la libération de ce retard
           </span>
         </div>
       </div>
@@ -1413,11 +1407,10 @@
       breakdownBox.style.display = 'none';
     }
 
-    document.getElementById('persSalary').textContent = Math.max(1, Math.round(totalCost / 2500));
-    document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
-    document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
     document.getElementById('persPizza').textContent =
       Math.max(1, Math.round(totalCost / 27)).toLocaleString('fr-FR').replace(/,/g, ' ');
+    document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
+    document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
   }
 
   function autoResizeDecision() {
