@@ -1133,6 +1133,12 @@
             Offrir <strong id="persSeminar">40</strong> séminaires d'équipe à Lisbonne
           </span>
         </div>
+        <div class="perspective">
+          <span class="perspective-icon">🍕</span>
+          <span class="perspective-text">
+            <strong id="persPizza">1 481</strong> pizzas pour fêter la libération de ce retard
+          </span>
+        </div>
       </div>
 
       <p class="section-title">Et si vous attendez encore</p>
@@ -1410,6 +1416,8 @@
     document.getElementById('persSalary').textContent = Math.max(1, Math.round(totalCost / 2500));
     document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
     document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
+    document.getElementById('persPizza').textContent =
+      Math.max(1, Math.round(totalCost / 27)).toLocaleString('fr-FR').replace(/,/g, ' ');
   }
 
   function autoResizeDecision() {
