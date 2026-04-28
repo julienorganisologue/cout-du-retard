@@ -1188,7 +1188,7 @@
 
         <div class="dynamics-content" id="dynamicsContent">
           <p class="dynamics-title">Pourquoi vos retards s'accumulent ?</p>
-          <p class="dynamics-subtitle">Parce que les projets sont comme des voitures sur une autoroute.<br/>Déplacez le curseur pour vous en rendre compte.</p>
+          <p class="dynamics-subtitle">Parce que les projets sont comme des voitures sur cette autoroute.<br/>Déplacez le curseur pour vous en rendre compte.</p>
 
           <div class="control-block">
             <div class="control-label">Charge moyenne de votre équipe</div>
@@ -1612,7 +1612,7 @@
     } else if (zone === 'slow') {
       insightBox.innerHTML = '<strong>Zone de tension.</strong> Les délais commencent à déraper.';
     } else {
-      insightBox.innerHTML = '<strong>Zone critique.</strong> Tout se bloque.';
+      insightBox.innerHTML = '<strong>Zone critique.</strong> Tout se bloque, une urgence déplace une tâche planifiée qui génère la prochaine urgence.';
     }
 
     updateHighwayAnimations();
@@ -1647,11 +1647,12 @@
   });
 
   // ============================================================
-  // CTA : INSCRIPTION KIT (mini-formation)
+  // CTA : INSCRIPTION KIT (API v3 avec clé publique)
   // ============================================================
 
   const KIT_FORM_ID = 'd1811eacaa';
-  const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
+  const KIT_API_KEY = 'u2QziG4Xgg4dKcyDp7y3Rw';
+  const KIT_ENDPOINT = `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`;
 
   const kitForm = document.getElementById('kitForm');
   const kitEmail = document.getElementById('kitEmail');
@@ -1692,17 +1693,30 @@
     kitSubmit.textContent = 'Envoi en cours';
 
     try {
-      const formData = new FormData();
-      formData.append('email_address', email);
-      await fetch(KIT_ENDPOINT, {
+      const response = await fetch(KIT_ENDPOINT, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors'
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify({
+          api_key: KIT_API_KEY,
+          email: email
+        })
       });
-      // En mode no-cors la réponse n'est pas lisible, on suppose le succès.
-      showCtaSuccess(email);
+
+      const data = await response.json();
+
+      if (response.ok && data.subscription) {
+        showCtaSuccess(email);
+      } else {
+        const errorMsg = data.message || data.error || 'Une erreur est survenue.';
+        showCtaError(errorMsg);
+        kitSubmit.disabled = false;
+        kitSubmit.classList.remove('loading');
+        kitSubmit.textContent = originalText;
+      }
     } catch (err) {
-      console.error('Erreur Kit:', err);
+      console.error('Erreur réseau Kit:', err);
       kitSubmit.disabled = false;
       kitSubmit.classList.remove('loading');
       kitSubmit.textContent = originalText;
