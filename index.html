@@ -1097,22 +1097,8 @@
 
       <div class="perspectives">
         <div class="perspective">
-          <span class="perspective-icon">🍕</span>
-          <span class="perspective-text">
-            <strong id="persPizza">1 481</strong> pizzas pour fêter la libération de ce retard
-          </span>
-        </div>
-        <div class="perspective">
-          <span class="perspective-icon">🏢</span>
-          <span class="perspective-text">
-            Couvrir <strong id="persRent">7</strong> mois de loyer d'un bureau pour 10 personnes
-          </span>
-        </div>
-        <div class="perspective">
-          <span class="perspective-icon">✈️</span>
-          <span class="perspective-text">
-            Offrir <strong id="persSeminar">40</strong> séminaires d'équipe à Lisbonne
-          </span>
+          <span class="perspective-icon" id="persIcon">⚡</span>
+          <span class="perspective-text" id="persText">une Tesla Model 3</span>
         </div>
       </div>
 
@@ -1320,10 +1306,128 @@
       breakdownBox.style.display = 'none';
     }
 
-    document.getElementById('persPizza').textContent =
-      Math.max(1, Math.round(totalCost / 27)).toLocaleString('fr-FR').replace(/,/g, ' ');
-    document.getElementById('persRent').textContent = Math.max(1, Math.round(totalCost / 6000));
-    document.getElementById('persSeminar').textContent = Math.max(1, Math.round(totalCost / 1000));
+    updatePerspective(totalCost);
+  }
+
+  // ============================================================
+  // PERSPECTIVE : un seul item tiré aléatoirement dans la tranche
+  // de coût la plus proche du coût total
+  // ============================================================
+  const PERSPECTIVES = [
+    { tier: 100, items: [
+      { icon: '🍕', text: 'un bon resto pour deux' },
+      { icon: '☕', text: '30 cafés au Flore' },
+      { icon: '🎬', text: '5 places de cinéma + popcorn' },
+      { icon: '🐠', text: 'un poisson rouge avec son aquarium' },
+    ]},
+    { tier: 500, items: [
+      { icon: '🖥️', text: 'un Mac mini' },
+      { icon: '📱', text: 'un iPhone reconditionné' },
+      { icon: '✈️', text: 'un week-end à Lisbonne pour 2' },
+      { icon: '🦴', text: '10 séances chez l\'ostéopathe' },
+      { icon: '🛴', text: 'une trottinette électrique honnête' },
+      { icon: '🎩', text: 'un chapeau Hermès (oui, ça existe)' },
+    ]},
+    { tier: 1000, items: [
+      { icon: '📱', text: 'un iPhone neuf' },
+      { icon: '💻', text: 'un MacBook reconditionné' },
+      { icon: '👔', text: 'un costume sur-mesure' },
+      { icon: '🏇', text: 'adopter un poney pendant 6 mois' },
+      { icon: '🍷', text: 'une caisse de Romanée-Conti (la plus petite)' },
+      { icon: '🎓', text: 'l\'acompte d\'une formation Le Wagon' },
+    ]},
+    { tier: 2500, items: [
+      { icon: '💻', text: 'un MacBook Pro neuf' },
+      { icon: '🚲', text: 'un vélo électrique haut de gamme' },
+      { icon: '🏨', text: '5 nuits au Ritz Paris' },
+      { icon: '🌴', text: 'un voyage en Polynésie pour 1' },
+      { icon: '🎺', text: 'une trompette plaquée or' },
+    ]},
+    { tier: 5000, items: [
+      { icon: '⌚', text: 'une Rolex Submariner d\'entrée de gamme' },
+      { icon: '🏝️', text: 'un séjour de luxe à Bali pour 2' },
+      { icon: '🍽️', text: 'un déjeuner au Bristol pour 10 personnes' },
+      { icon: '🦙', text: 'acheter un lama (vraiment)' },
+      { icon: '💼', text: '50 abonnements LinkedIn Premium' },
+    ]},
+    { tier: 10000, items: [
+      { icon: '🏍️', text: 'une moto électrique' },
+      { icon: '🎹', text: 'un piano droit Yamaha' },
+      { icon: '🏖️', text: '200 jours de coworking sur la Côte d\'Azur' },
+      { icon: '🤖', text: 'un robot aspirateur dernier cri… 6 fois' },
+      { icon: '👨‍⚖️', text: 'un cabinet d\'avocat junior pendant 1 mois' },
+    ]},
+    { tier: 25000, items: [
+      { icon: '🚗', text: 'une Renault Clio neuve' },
+      { icon: '🏰', text: 'un mois entier dans un palace 5★' },
+      { icon: '🌾', text: 'un séminaire d\'équipe à Saint-Tropez' },
+      { icon: '🎓', text: 'un an de scolarité à HEC' },
+      { icon: '🐉', text: 'un dragon en peluche taille réelle, fait main' },
+    ]},
+    { tier: 50000, items: [
+      { icon: '⚡', text: 'une Tesla Model 3' },
+      { icon: '🏠', text: 'un studio à Marseille' },
+      { icon: '👨‍💼', text: '1 an de salaire d\'un product manager' },
+      { icon: '⛵', text: 'un yacht en location pendant 1 mois' },
+      { icon: '🛁', text: 'une rénovation de cuisine de luxe' },
+    ]},
+    { tier: 100000, items: [
+      { icon: '🏎️', text: 'une Porsche 911 d\'occasion' },
+      { icon: '🏡', text: 'une maison entière à Saint-Étienne' },
+      { icon: '🎓', text: 'un MBA Executive à HEC' },
+      { icon: '🐎', text: 'un cheval de course de niveau régional' },
+      { icon: '💍', text: 'une bague de fiançailles très très indécente' },
+    ]},
+    { tier: 250000, items: [
+      { icon: '🏛️', text: 'un T3 à Bordeaux' },
+      { icon: '🐂', text: 'une Lamborghini Huracán d\'occasion' },
+      { icon: '🚀', text: 'lancer une boîte avec 1 an de runway pour 5 personnes' },
+      { icon: '🍇', text: 'une parcelle de vigne en Bourgogne' },
+      { icon: '🦏', text: 'sponsoriser un rhinocéros au Kenya pendant 50 ans' },
+    ]},
+    { tier: 500000, items: [
+      { icon: '🏙️', text: 'un T2 à Paris' },
+      { icon: '⛵', text: 'un voilier de 10 mètres' },
+      { icon: '🚀', text: '1 ticket Blue Origin' },
+      { icon: '🏀', text: 'une saison NBA pour un joueur remplaçant' },
+      { icon: '🍷', text: 'une bouteille de Romanée-Conti 1945' },
+    ]},
+    { tier: 1000000, items: [
+      { icon: '🏰', text: 'un château en Dordogne (dans son jus)' },
+      { icon: '🏝️', text: 'une petite île aux Philippines' },
+      { icon: '🎨', text: 'un Picasso (mineur, hein)' },
+      { icon: '🚀', text: '2 tickets Blue Origin' },
+      { icon: '⚽', text: 'sponsoriser une saison de Ligue 1 d\'un club moyen' },
+    ]},
+  ];
+
+  let lastPerspectiveTierIndex = -1;
+
+  function pickPerspectiveTier(cost) {
+    // Distance log : plus proche = ratio cost/tier le plus proche de 1
+    const c = Math.max(cost, 1);
+    let bestIndex = 0;
+    let bestDist = Infinity;
+    for (let i = 0; i < PERSPECTIVES.length; i++) {
+      const dist = Math.abs(Math.log(c / PERSPECTIVES[i].tier));
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIndex = i;
+      }
+    }
+    return bestIndex;
+  }
+
+  function updatePerspective(totalCost) {
+    const tierIndex = pickPerspectiveTier(totalCost);
+    // On ne ré-tire que si la tranche change, pour éviter le flicker quand
+    // l'utilisateur bouge un curseur d'un cran
+    if (tierIndex === lastPerspectiveTierIndex) return;
+    lastPerspectiveTierIndex = tierIndex;
+    const items = PERSPECTIVES[tierIndex].items;
+    const item = items[Math.floor(Math.random() * items.length)];
+    document.getElementById('persIcon').textContent = item.icon;
+    document.getElementById('persText').textContent = item.text;
   }
 
   function autoResizeDecision() {
