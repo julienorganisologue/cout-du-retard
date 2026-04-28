@@ -16,6 +16,10 @@
     --accent-soft: #fee2e2;
     --line: #e2e8f0;
     --card: #f8fafc;
+    --green: #16a34a;
+    --green-soft: #dcfce7;
+    --amber: #d97706;
+    --amber-soft: #fef3c7;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -511,11 +515,15 @@
     text-align: center;
   }
 
-  .utilization-control {
-    margin-bottom: 16px;
+  .control-block {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
   }
 
-  .utilization-label {
+  .control-label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -525,96 +533,190 @@
     text-align: center;
   }
 
-  .utilization-value {
+  .control-value {
     font-family: 'Inter', sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 800;
     text-align: center;
-    margin: 2px 0 10px;
-    color: var(--ink);
+    margin: 2px 0 14px;
     letter-spacing: -1px;
+    transition: color 0.3s;
   }
 
-  .chart-container {
+  .charge-slider {
+    height: 6px !important;
+    background: linear-gradient(to right,
+      var(--green) 0%,
+      var(--green) 35%,
+      var(--amber) 50%,
+      var(--accent) 75%,
+      var(--accent) 100%) !important;
+  }
+
+  .charge-slider::-webkit-slider-thumb {
+    background: var(--ink) !important;
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .charge-slider::-moz-range-thumb {
+    background: var(--ink) !important;
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  /* === AUTOROUTE === */
+  .highway-wrapper {
     background: var(--bg);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 12px 10px;
-    margin: 14px 0 18px;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    overflow: hidden;
   }
 
-  .chart-svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    cursor: pointer;
-    touch-action: none;
+  .highway-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
-  .chart-point {
-    cursor: grab;
-  }
-
-  .chart-point.dragging {
-    cursor: grabbing;
-  }
-
-  #utilizationSlider {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .chart-curve {
-    fill: none;
-    stroke: var(--ink-soft);
-    stroke-width: 2;
-    opacity: 0.3;
-  }
-
-  .chart-curve-active {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 3;
-    transition: all 0.2s ease-out;
-  }
-
-  .chart-point {
-    fill: var(--accent);
-    stroke: #fff;
-    stroke-width: 3;
-    filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.4));
-    transition: all 0.2s ease-out;
-  }
-
-  .chart-axis {
-    stroke: var(--line);
-    stroke-width: 1;
-  }
-
-  .chart-label {
-    fill: var(--ink-soft);
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .queue-explosion {
-    text-align: center;
-    margin: 20px 0 18px;
-  }
-
-  .queue-label {
+  .flow-counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--card);
+    border-radius: 20px;
     font-size: 12px;
     color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .flow-counter strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+
+  .flow-counter.zone-fluid strong { color: var(--green); }
+  .flow-counter.zone-slow strong { color: var(--amber); }
+  .flow-counter.zone-jam strong { color: var(--accent); }
+
+  .speed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .speed-badge.zone-fluid { background: var(--green-soft); color: var(--green); }
+  .speed-badge.zone-slow { background: var(--amber-soft); color: var(--amber); }
+  .speed-badge.zone-jam { background: var(--accent-soft); color: var(--accent); }
+
+  .speed-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
+  }
+
+  .highway {
+    position: relative;
+    height: 140px;
+    background: #2a2f3a;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  .lane-divider {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
+    background-image: repeating-linear-gradient(
+      to right,
+      #fff 0,
+      #fff 30px,
+      transparent 30px,
+      transparent 60px
+    );
+  }
+
+  .highway::before,
+  .highway::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #fbbf24;
+  }
+  .highway::before { top: 6px; }
+  .highway::after { bottom: 6px; }
+
+  .lane {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    overflow: hidden;
+  }
+  .lane-top { top: 0; }
+  .lane-bottom { bottom: 0; }
+
+  .car {
+    position: absolute;
+    font-size: 28px;
+    line-height: 1;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    will-change: transform, left;
+    user-select: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .lane-bottom .car {
+    transform: translateY(-50%) scaleX(-1);
+  }
+
+  /* === STATS QUEUE === */
+  .stats-block {
+    text-align: center;
+    padding: 22px 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+
+  .stats-label {
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    color: var(--ink-soft);
     margin-bottom: 6px;
     font-weight: 500;
   }
 
-  .queue-number {
+  .stats-number {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
     color: var(--accent);
@@ -625,324 +727,251 @@
     display: inline-block;
   }
 
-  .queue-unit {
+  .stats-unit {
     font-size: 13px;
     color: var(--ink-soft);
     margin-top: 4px;
   }
 
-  /* === TOGGLE "POURQUOI ÇA EXPLOSE ?" === */
-  .why-section {
-    margin: 8px 0 18px;
-    text-align: center;
-  }
-
-  .why-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 14px;
-    background: transparent;
-    color: var(--ink-soft);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    font-size: 12px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .why-toggle:hover {
-    border-color: var(--ink);
-    color: var(--ink);
-  }
-
-  .why-toggle.active {
-    border-color: var(--ink);
-    color: var(--ink);
-    background: var(--bg);
-  }
-
-  .why-content {
-    display: none;
+  .insight-zone {
     margin-top: 14px;
-    padding: 18px;
-    background: var(--bg);
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    text-align: left;
-    animation: fadeIn 0.3s ease-out;
-  }
-
-  .why-content.visible { display: block; }
-
-  .why-intro {
-    font-size: 13px;
-    line-height: 1.55;
-    margin-bottom: 14px;
-    color: var(--ink);
-  }
-
-  .why-intro strong { color: var(--accent); font-weight: 700; }
-
-  .why-analogy {
-    background: var(--card);
-    border: 1px solid var(--line);
+    padding: 10px 14px;
     border-radius: 10px;
-    padding: 12px 14px;
-    margin: 12px 0;
-    font-size: 12.5px;
-    line-height: 1.55;
-  }
-
-  .why-analogy-title {
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 4px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .why-mechanism { margin: 14px 0; }
-
-  .why-mechanism-step {
-    display: flex;
-    gap: 12px;
-    padding: 8px 0;
-    align-items: flex-start;
-    font-size: 12.5px;
+    font-size: 13px;
+    transition: all 0.3s;
     line-height: 1.5;
   }
 
-  .why-step-number {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 12px;
-  }
+  .insight-zone.zone-fluid { background: var(--green-soft); color: var(--green); }
+  .insight-zone.zone-slow { background: var(--amber-soft); color: var(--amber); }
+  .insight-zone.zone-jam { background: var(--accent-soft); color: var(--accent); }
 
-  .why-step-text strong { color: var(--ink); font-weight: 600; }
+  .insight-zone strong { font-weight: 700; }
 
-  .why-conclusion {
-    margin-top: 12px;
-    padding: 12px 14px;
-    background: var(--accent-soft);
-    border-radius: 10px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-
-  .why-conclusion strong { color: var(--accent); font-weight: 700; }
-
-  .insights {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin: 14px 0;
-    font-size: 13px;
-    line-height: 1.55;
-  }
-
-  .insight-line {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 4px 0;
-  }
-
-  .insight-arrow {
-    color: var(--accent);
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .insight-text strong {
-    color: var(--ink);
-    font-weight: 700;
-  }
-
-  .zone-badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 10px;
-  }
-
-  .zone-safe { background: #dcfce7; color: #166534; }
-  .zone-warning { background: #fef3c7; color: #92400e; }
-  .zone-danger { background: var(--accent-soft); color: var(--accent); }
-
-  .cta-section {
-    margin-top: 24px;
-    padding: 22px 20px;
+  /* === EXPLICATION === */
+  .explanation {
     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 14px;
+  }
+
+  .explanation-lead {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+  }
+
+  .explanation p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .explanation p:last-child { margin-bottom: 0; }
+
+  .explanation .renard {
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 20px 0;
+    border: 0;
+  }
+
+  /* === COURSE INTRO === */
+  .course-intro { margin-top: 4px; }
+
+  .course-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .course-title {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+
+  .course-title .multiplier { color: var(--accent); }
+  .course-title strong { color: var(--accent); font-weight: 800; }
+
+  .course-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-top: 14px;
+  }
+
+  .course-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+  }
+
+  .course-bullets li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .course-bullets li:last-child { margin-bottom: 0; }
+
+  .bullet-check {
+    flex-shrink: 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .course-bullets em {
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* === CTA KIT === */
+  .cta-section {
+    margin-top: 22px;
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
     text-align: center;
   }
 
-  .cta-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-
-  .cta-subtitle {
+  .cta-text {
     font-size: 13px;
     color: var(--ink-soft);
-    margin-bottom: 14px;
-    line-height: 1.5;
+    margin-bottom: 10px;
   }
 
-  .cta-email-row {
+  .cta-form {
     display: flex;
     gap: 8px;
-    max-width: 380px;
-    margin: 0 auto 10px;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
-  .cta-email-input {
+  .cta-form input {
     flex: 1;
-    padding: 10px 12px;
+    padding: 10px 14px;
     border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--bg);
-    font-family: 'Inter', sans-serif;
+    border-radius: 8px;
     font-size: 13px;
-    color: var(--ink);
+    font-family: inherit;
+    outline: none;
     transition: border-color 0.2s;
   }
 
-  .cta-email-input:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
+  .cta-form input:focus { border-color: var(--accent); }
 
-  .cta-btn {
+  .cta-form button {
     padding: 10px 16px;
     background: var(--accent);
     color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
+    border: 0;
+    border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s;
     white-space: nowrap;
   }
 
-  .cta-btn:hover {
-    background: #b91c1c;
-    transform: translateY(-1px);
+  .cta-form button:hover { background: #b91c1c; }
+  .cta-form button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .cta-form button.loading::after {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
   }
 
-  .cta-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
-  .cta-hint {
+  .cta-trust {
+    margin-top: 8px;
     font-size: 11px;
     color: var(--ink-soft);
-    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .cta-error {
-    font-size: 12px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: var(--accent-soft);
     color: var(--accent);
-    margin-top: 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    text-align: center;
     display: none;
   }
 
   .cta-error.visible { display: block; }
 
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+  .success-icon {
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 8px;
   }
 
-  .modal-overlay.visible {
-    display: flex;
-    animation: fadeInOverlay 0.2s ease-out;
+  .success-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--green);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
   }
 
-  @keyframes fadeInOverlay {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 1000px;
-    height: 90vh;
-    max-height: 780px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    animation: slideUp 0.3s ease-out;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    background: rgba(0,0,0,0.06);
-    border: none;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
+  .success-text {
+    font-size: 13px;
     color: var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: background 0.2s;
-    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+    margin-bottom: 12px;
   }
 
-  .modal-close:hover { background: rgba(0,0,0,0.12); }
+  .success-text strong { color: var(--ink); font-weight: 700; }
 
-  .calendly-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
+  .success-tip {
+    font-size: 11px;
+    color: var(--ink-soft);
+    padding: 8px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    line-height: 1.5;
   }
 
   footer {
@@ -985,16 +1014,16 @@
     }
     .big-number { font-size: 72px; }
     .result-inner { max-width: 100%; }
-    .queue-number { font-size: 72px !important; letter-spacing: -2px; }
-    .cta-email-row {
+    .stats-number { font-size: 72px !important; letter-spacing: -2px; }
+    .cta-form {
       flex-direction: column;
       max-width: 100%;
     }
-    .cta-btn { width: 100%; }
-    .cta-email-input { width: 100%; }
-    .cta-section { padding: 20px 16px; }
-    .insights { padding: 14px; }
-    .chart-container { padding: 12px 6px 8px; }
+    .cta-form input,
+    .cta-form button { width: 100%; }
+    .cta-section { padding: 16px; }
+    .explanation { padding: 18px; }
+    .control-block, .highway-wrapper, .stats-block { padding: 14px; }
     .dynamics-title { font-size: 18px; }
   }
 
@@ -1005,7 +1034,9 @@
     }
     .big-number { font-size: 60px; }
     .card { padding: 20px; }
-    .queue-number { font-size: 60px !important; }
+    .stats-number { font-size: 60px !important; }
+    .car { font-size: 22px; }
+    .highway { height: 110px; }
   }
 </style>
 </head>
@@ -1157,165 +1188,120 @@
 
         <div class="dynamics-content" id="dynamicsContent">
           <p class="dynamics-title">Pourquoi vos retards s'accumulent ?</p>
-          <p class="dynamics-subtitle">À cause du taux d'occupation de votre équipe.<br/>Placez-vous sur la courbe et observez la dynamique.</p>
+          <p class="dynamics-subtitle">Parce que les projets sont comme des voitures sur une autoroute.<br/>Déplacez le curseur pour vous en rendre compte.</p>
 
-          <div class="utilization-control">
-            <div class="utilization-label">Charge moyenne de votre équipe</div>
-            <div class="utilization-value"><span id="utilizationValue">85</span>%</div>
-          </div>
-
-          <input type="range" id="utilizationSlider" min="50" max="98" step="1" value="85" />
-
-          <div class="chart-container">
-            <svg class="chart-svg" id="chartSvg" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet">
-              <line class="chart-axis" x1="40" y1="210" x2="390" y2="210" />
-              <line class="chart-axis" x1="40" y1="20" x2="40" y2="210" />
-              <line class="chart-axis" x1="40" y1="60" x2="390" y2="60" stroke-dasharray="2,4" opacity="0.4" />
-              <line class="chart-axis" x1="40" y1="120" x2="390" y2="120" stroke-dasharray="2,4" opacity="0.4" />
-              <line class="chart-axis" x1="40" y1="170" x2="390" y2="170" stroke-dasharray="2,4" opacity="0.4" />
-              <path class="chart-curve" id="chartCurveFull" />
-              <path class="chart-curve-active" id="chartCurveActive" />
-              <circle class="chart-point" id="chartPoint" cx="270" cy="150" r="8" />
-              <text class="chart-label" x="40" y="225" text-anchor="start">50%</text>
-              <text class="chart-label" x="215" y="225" text-anchor="middle">75%</text>
-              <text class="chart-label" x="390" y="225" text-anchor="end">100%</text>
-              <text class="chart-label" x="35" y="215" text-anchor="end">0</text>
-              <text class="chart-label" x="35" y="175" text-anchor="end">5</text>
-              <text class="chart-label" x="35" y="125" text-anchor="end">20</text>
-              <text class="chart-label" x="35" y="65" text-anchor="end">50+</text>
-              <text class="chart-label" x="215" y="240" text-anchor="middle" style="font-weight: 600;">Charge (%)</text>
-            </svg>
-          </div>
-
-          <div class="queue-explosion">
-            <div class="queue-label">Tâches en attente</div>
-            <div class="queue-number" id="queueNumber" style="font-size: 80px;">6</div>
-            <div class="queue-unit">en moyenne, en permanence</div>
-          </div>
-
-          <div class="why-section">
-            <button class="why-toggle" id="whyToggle">
-              <span>🤔</span>
-              <span id="whyToggleLabel">Pourquoi ça explose ?</span>
-            </button>
-
-            <div class="why-content" id="whyContent">
-              <p class="why-intro">
-                Vos équipes sont <strong>humaines</strong>, pas des machines.
-                Quand une ressource est occupée à 90 %, chaque nouvelle demande trouve
-                la ressource déjà prise <strong>9 fois sur 10</strong>. Elle attend.
-                Et plus il y a de demandes qui attendent, <strong>plus chaque nouvelle
-                demande attend longtemps</strong>. C'est la théorie des files d'attente.
-                Ce n'est pas un problème de volonté, c'est mathématique.
-              </p>
-
-              <div class="why-analogy">
-                <div class="why-analogy-title">🛣️ L'analogie de l'autoroute</div>
-                Une autoroute à <strong>60 % de charge</strong> : tout le monde roule à 130.
-                À <strong>80 % de charge</strong> : ralentissements, vitesse moyenne 90.
-                À <strong>95 % de charge</strong> : bouchon total, vitesse moyenne 15.
-                Il n'y a eu que 15 % de voitures en plus, mais la vitesse s'est effondrée.
-                <br/><br/>
-                <strong>Votre entreprise fonctionne exactement pareil.</strong> Les demandes
-                clients, les projets internes, les décisions à prendre circulent sur une
-                "autoroute" interne. Quand votre capacité approche 100 %, tout se bloque.
-              </div>
-
-              <div class="why-mechanism">
-                <p style="font-weight: 700; margin-bottom: 8px; font-size: 13px;">
-                  Le mécanisme en 3 étapes :
-                </p>
-
-                <div class="why-mechanism-step">
-                  <div class="why-step-number">1</div>
-                  <div class="why-step-text">
-                    <strong>La variabilité existe toujours.</strong> Certaines tâches prennent
-                    1 heure, d'autres 10. Un client urgent arrive sans prévenir. Un bug bloque
-                    tout. Cette variabilité est inévitable.
-                  </div>
-                </div>
-
-                <div class="why-mechanism-step">
-                  <div class="why-step-number">2</div>
-                  <div class="why-step-text">
-                    <strong>Plus la charge monte, moins de marge pour absorber les pics.</strong>
-                    À 60 % de charge, une tâche imprévue se glisse dans les 40 % libres.
-                    À 95 %, elle attend derrière les autres. Cette attente devient exponentielle
-                    parce que chaque pic (urgence, opportunité) retarde aussi les suivants.
-                  </div>
-                </div>
-
-                <div class="why-mechanism-step">
-                  <div class="why-step-number">3</div>
-                  <div class="why-step-text">
-                    <strong>Les files s'empilent, invisibles.</strong> Dans une usine, on voit
-                    les stocks s'accumuler. Dans le travail intellectuel, les files sont plus
-                    vicieuses : elles sont dans les boîtes mails, les "en attente de validation",
-                    les documents démarrés mais non terminés. Invisibles mais bien réelles.
-                    Et elles grossissent exponentiellement avec la charge.
-                  </div>
-                </div>
-              </div>
-
-              <div class="why-conclusion">
-                <strong>Conclusion contre-intuitive :</strong> "faire travailler les gens à fond"
-                ne produit pas plus de valeur. Au contraire, ça crée des files d'attente géantes
-                qui ralentissent tout le système. Les meilleures entreprises laissent
-                <strong>20 à 30 % de capacité libre</strong> pour maintenir un flux rapide.
-                Ce n'est pas du gaspillage, c'est de la vitesse.
-              </div>
+          <div class="control-block">
+            <div class="control-label">Charge moyenne de votre équipe</div>
+            <div class="control-value" id="chargeValue">60%</div>
+            <input type="range" id="chargeSlider" class="charge-slider" min="40" max="98" step="1" value="60" />
+            <div class="range-labels">
+              <span>40%</span>
+              <span>70%</span>
+              <span>98%</span>
             </div>
           </div>
 
-          <div class="insights">
-            <div class="insight-line">
-              <span class="insight-arrow">→</span>
-              <span class="insight-text">À <strong><span id="insightUtil">85</span>%</strong> de charge, vos délais sont multipliés par <strong><span id="insightMultiplier">7</span></strong> par rapport au temps de travail réel.</span>
+          <div class="highway-wrapper">
+            <div class="highway" id="highway">
+              <div class="lane lane-top" id="laneTop"></div>
+              <div class="lane-divider"></div>
+              <div class="lane lane-bottom" id="laneBottom"></div>
             </div>
-            <div class="insight-line">
-              <span class="insight-arrow">→</span>
-              <span class="insight-text">Chaque <strong>1% de charge en plus</strong> aggrave exponentiellement la situation.</span>
-            </div>
-            <div class="insight-line">
-              <span class="insight-arrow">→</span>
-              <span class="insight-text" id="insightZone">
-                Votre équipe est dans la zone <strong>à risque</strong>.
+            <div class="highway-footer">
+              <span class="flow-counter zone-fluid" id="flowCounter">
+                <strong id="flowValue">900</strong>
+                <span>voitures/h</span>
+              </span>
+              <span class="speed-badge zone-fluid" id="speedBadge">
+                <span class="speed-dot"></span>
+                <span id="speedText">130 km/h</span>
               </span>
             </div>
-            <div style="text-align: center;">
-              <span class="zone-badge" id="zoneBadge">Zone à risque</span>
+          </div>
+
+          <div class="stats-block">
+            <div class="stats-label">Tâches en attente</div>
+            <div class="stats-number" id="queueNumber" style="font-size: 56px;">0,9</div>
+            <div class="stats-unit">en moyenne, en permanence</div>
+            <div class="insight-zone zone-fluid" id="insightBox">
+              <strong>Zone confortable.</strong> Vos délais sont maîtrisés.
             </div>
           </div>
 
-          <div class="insights" style="background: #fafafa; border: 1px dashed var(--line);">
-            <p style="font-weight: 600; margin-bottom: 6px;">💡 L'insight contre-intuitif</p>
-            <p style="color: var(--ink-soft);">
-              Pour réduire vos délais sans embaucher, il suffit parfois de faire
-              <strong style="color: var(--ink);">redescendre la charge de 95% à 80%</strong>.
-              L'effet sur les files d'attente est immédiat et massif. La "capacité inutilisée"
-              n'est pas du gaspillage — c'est ce qui rend votre système rapide et prévisible.
+          <div class="explanation">
+            <p class="explanation-lead">
+              Vos projets avancent comme les voitures sur cette autoroute. Plus il y en a, plus ça ralentit et plus le retard augmente.
             </p>
+
+            <p>
+              Le moindre imprévu <span class="renard">(un renard qui traverse la route, un camion qui change de voie)</span> peut avoir des conséquences massives sur l'ensemble des voitures.
+            </p>
+
+            <p>
+              De la même manière pour votre entreprise, un bug dans un logiciel, un client qui débarque avec une demande urgente ou un collaborateur absent peut faire dérailler plusieurs projets d'un coup.
+            </p>
+
+            <p>
+              Ajouter une nouvelle voie (travailler le soir, le week-end, engager plus de monde) ne change pas le problème. Vous aurez rapidement 3 voies surchargées.
+            </p>
+
+            <hr class="divider" />
+
+            <div class="course-intro">
+              <div class="course-badge">🎓 Mini-formation gratuite</div>
+              <p class="course-title">
+                Terminer vos projets <span class="multiplier">3× plus vite</span> sans embaucher,<br/>
+                grâce à la méthode <strong>Anti-Bouchon™</strong>
+              </p>
+              <p class="course-subtitle">Vous allez découvrir :</p>
+
+              <ul class="course-bullets">
+                <li>
+                  <span class="bullet-check">✅</span>
+                  <span>Comment <strong>diviser par deux vos délais de livraison</strong>... en démarrant moins de projets <em>(oui, vous avez bien lu)</em>.</span>
+                </li>
+                <li>
+                  <span class="bullet-check">✅</span>
+                  <span>Pourquoi avoir plus d'équipes ou d'employés <strong>ne raccourcit (presque) jamais vos délais</strong> — et la véritable raison mathématique derrière ce paradoxe que peu de patrons connaissent.</span>
+                </li>
+                <li>
+                  <span class="bullet-check">✅</span>
+                  <span>Pourquoi les meilleures PME <strong>refusent d'attendre la fin du mois</strong> pour livrer (et ce qu'elles font à la place pour réduire leurs délais de <strong>70%</strong>, sans embaucher).</span>
+                </li>
+                <li>
+                  <span class="bullet-check">✅</span>
+                  <span>Comment savoir <strong>4 mois à l'avance</strong> si votre projet va déraper — et comment éviter que ça arrive.</span>
+                </li>
+                <li>
+                  <span class="bullet-check">✅</span>
+                  <span>La <strong>règle des 3-5</strong> appliquée par les meilleurs cabinets de conseil pour livrer <strong>2× plus vite</strong> que la moyenne.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cta-section" id="ctaSection">
+              <div id="ctaForm">
+                <div class="cta-text">Recevez la mini-formation gratuitement :</div>
+                <form class="cta-form" id="kitForm">
+                  <input type="email" id="kitEmail" placeholder="Votre email" required autocomplete="email" />
+                  <button type="submit" id="kitSubmit">Je veux la formation →</button>
+                </form>
+                <div class="cta-trust">100% gratuit · Pas de spam · Désinscription en 1 clic</div>
+                <div class="cta-error" id="ctaError"></div>
+              </div>
+
+              <div id="ctaSuccess" style="display:none;">
+                <div class="success-icon">✅</div>
+                <div class="success-title">Inscription confirmée !</div>
+                <div class="success-text">
+                  Vérifiez votre boîte mail pour <strong id="successEmail"></strong>.<br/>
+                  Vous allez recevoir le lien vers la mini-formation dans quelques instants.
+                </div>
+                <div class="success-tip">💡 Pensez à vérifier vos spams si vous ne recevez rien sous 5 min.</div>
+              </div>
+            </div>
           </div>
 
-          <div class="cta-section">
-            <p class="cta-title">Vous savez combien ça coûte. Vous savez pourquoi.<br/>Maintenant, on fait quoi ?</p>
-            <p class="cta-subtitle">20 minutes avec Julien pour comprendre comment réduire ce coût dans votre contexte.</p>
-
-            <form id="ctaForm" class="cta-email-row">
-              <input type="email" id="ctaEmail" class="cta-email-input" placeholder="votre@email.fr" required />
-              <button type="submit" class="cta-btn" id="ctaSubmit">Réserver un appel →</button>
-            </form>
-            <p class="cta-hint">Gratuit · Sans engagement · Sous 48h</p>
-            <p class="cta-error" id="ctaError">Merci de saisir un email valide.</p>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="modal-overlay" id="calendlyModal">
-        <div class="modal-content">
-          <button class="modal-close" id="modalClose">×</button>
-          <iframe class="calendly-iframe" id="calendlyIframe" src="about:blank" title="Prendre rendez-vous"></iframe>
         </div>
       </div>
 
@@ -1481,20 +1467,177 @@
   update();
 
   // ============================================================
-  // SECTION "COMPRENDRE LA DYNAMIQUE DU RETARD"
+  // SECTION "COMPRENDRE LA DYNAMIQUE DU RETARD" — autoroute animée
   // ============================================================
 
-  const TYPEFORM_URL = 'https://form.typeform.com/to/IdCjICDR';
+  const CAR_EMOJIS = ['🚗', '🚙', '🚐', '🚕', '🚓', '🚑', '🚒', '🛻'];
 
   const toggleDynamicsBtn = document.getElementById('toggleDynamics');
   const dynamicsContent = document.getElementById('dynamicsContent');
-  const utilizationSlider = document.getElementById('utilizationSlider');
+  const chargeSlider = document.getElementById('chargeSlider');
+  const chargeValue = document.getElementById('chargeValue');
+  const speedBadge = document.getElementById('speedBadge');
+  const speedText = document.getElementById('speedText');
+  const flowCounter = document.getElementById('flowCounter');
+  const flowValue = document.getElementById('flowValue');
+  const laneTop = document.getElementById('laneTop');
+  const laneBottom = document.getElementById('laneBottom');
+  const queueNumber = document.getElementById('queueNumber');
+  const insightBox = document.getElementById('insightBox');
+  const highwayEl = document.getElementById('highway');
+
+  let highwayWidth = 0;
+  let dynamicsInitialized = false;
+
+  function measureHighway() {
+    highwayWidth = highwayEl.offsetWidth;
+  }
+
+  function carsPerLane(charge) {
+    return Math.round(2 + ((charge - 40) / 58) * 12);
+  }
+
+  function speedKmh(charge) {
+    const rho = charge / 100;
+    const factor = (1 - rho) / 0.6;
+    return Math.max(2, Math.round(130 * Math.pow(Math.max(0, factor), 1.4)));
+  }
+
+  function animDuration(charge) {
+    const rho = charge / 100;
+    return 2 + Math.pow(rho, 4) * 50;
+  }
+
+  function queueSize(charge) {
+    const rho = charge / 100;
+    if (rho >= 1) return 999;
+    return (rho * rho) / (1 - rho);
+  }
+
+  function flowPerHour(charge) {
+    const carsCount = carsPerLane(charge) * 2;
+    const speed = speedKmh(charge);
+    const flow = (carsCount * speed) / 50 * 60;
+    return Math.max(60, Math.round(flow / 10) * 10);
+  }
+
+  function createCar(totalCars, index, duration) {
+    const car = document.createElement('div');
+    car.className = 'car';
+    car.textContent = CAR_EMOJIS[Math.floor(Math.random() * CAR_EMOJIS.length)];
+    const spacing = duration / totalCars;
+    car.style.animation = `driveRight ${duration}s linear infinite`;
+    car.style.animationDelay = (-spacing * index) + 's';
+    return car;
+  }
+
+  function renderHighway(charge) {
+    const count = carsPerLane(charge);
+    const duration = animDuration(charge);
+    laneTop.innerHTML = '';
+    laneBottom.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      laneTop.appendChild(createCar(count, i, duration));
+    }
+    for (let i = 0; i < count; i++) {
+      const car = createCar(count, i, duration);
+      const halfSpacing = duration / count / 2;
+      car.style.animationDelay = (parseFloat(car.style.animationDelay) + halfSpacing) + 's';
+      laneBottom.appendChild(car);
+    }
+  }
+
+  function updateHighwayAnimations() {
+    const w = highwayWidth;
+    const carWidth = 50;
+    let styleEl = document.getElementById('dynamicAnims');
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'dynamicAnims';
+      document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = `
+      @keyframes driveRight {
+        from { left: -${carWidth}px; }
+        to { left: ${w}px; }
+      }
+    `;
+  }
+
+  function updateDynamics() {
+    const charge = parseInt(chargeSlider.value);
+    const speed = speedKmh(charge);
+    const q = queueSize(charge);
+
+    chargeValue.textContent = charge + '%';
+    speedText.textContent = speed + ' km/h';
+
+    let zone;
+    if (charge < 75) zone = 'fluid';
+    else if (charge < 88) zone = 'slow';
+    else zone = 'jam';
+
+    chargeValue.style.color =
+      zone === 'fluid' ? 'var(--green)' :
+      zone === 'slow' ? 'var(--amber)' : 'var(--accent)';
+
+    speedBadge.classList.remove('zone-fluid', 'zone-slow', 'zone-jam');
+    speedBadge.classList.add('zone-' + zone);
+
+    const flow = flowPerHour(charge);
+    flowValue.textContent = flow.toLocaleString('fr-FR').replace(/,/g, ' ');
+    flowCounter.classList.remove('zone-fluid', 'zone-slow', 'zone-jam');
+    flowCounter.classList.add('zone-' + zone);
+
+    const displayQueue = q < 10 ? q.toFixed(1).replace('.', ',') : Math.round(q);
+    queueNumber.textContent = displayQueue;
+
+    let fontSize;
+    if (charge < 70) fontSize = 56;
+    else if (charge < 80) fontSize = 72;
+    else if (charge < 88) fontSize = 88;
+    else if (charge < 93) fontSize = 104;
+    else if (charge < 96) fontSize = 120;
+    else fontSize = 140;
+    queueNumber.style.fontSize = fontSize + 'px';
+
+    queueNumber.style.color =
+      zone === 'fluid' ? 'var(--green)' :
+      zone === 'slow' ? 'var(--amber)' : 'var(--accent)';
+
+    insightBox.classList.remove('zone-fluid', 'zone-slow', 'zone-jam');
+    insightBox.classList.add('zone-' + zone);
+    if (zone === 'fluid') {
+      insightBox.innerHTML = '<strong>Zone confortable.</strong> Vos délais sont maîtrisés.';
+    } else if (zone === 'slow') {
+      insightBox.innerHTML = '<strong>Zone de tension.</strong> Les délais commencent à déraper.';
+    } else {
+      insightBox.innerHTML = '<strong>Zone critique.</strong> Tout se bloque.';
+    }
+
+    updateHighwayAnimations();
+    renderHighway(charge);
+  }
+
+  chargeSlider.addEventListener('input', updateDynamics);
+  window.addEventListener('resize', () => {
+    if (!dynamicsInitialized) return;
+    measureHighway();
+    updateHighwayAnimations();
+  });
 
   toggleDynamicsBtn.addEventListener('click', () => {
     dynamicsContent.classList.toggle('visible');
     if (dynamicsContent.classList.contains('visible')) {
       toggleDynamicsBtn.textContent = 'Masquer ↑';
-      updateDynamics();
+      if (!dynamicsInitialized) {
+        // Premier affichage : measure et init après que le contenu soit visible
+        setTimeout(() => {
+          measureHighway();
+          updateDynamics();
+          dynamicsInitialized = true;
+        }, 50);
+      }
       setTimeout(() => {
         dynamicsContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -1503,242 +1646,67 @@
     }
   });
 
-  function queueSize(rhoPercent) {
-    const rho = rhoPercent / 100;
-    if (rho >= 1) return 999;
-    return (rho * rho) / (1 - rho);
-  }
-
-  function cycleMultiplier(rhoPercent) {
-    const rho = rhoPercent / 100;
-    if (rho >= 1) return 999;
-    return 1 / (1 - rho);
-  }
-
-  function queueToY(q) {
-    const capped = Math.min(q, 100);
-    const normalized = Math.log(1 + capped) / Math.log(1 + 100);
-    return 210 - normalized * 185;
-  }
-
-  function rhoToX(rhoPercent) {
-    return 40 + ((rhoPercent - 50) / 50) * 350;
-  }
-
-  function buildCurvePath(fromRho, toRho) {
-    let path = '';
-    const step = 0.5;
-    for (let rho = fromRho; rho <= toRho; rho += step) {
-      const x = rhoToX(rho);
-      const y = queueToY(queueSize(rho));
-      if (rho === fromRho) {
-        path += `M ${x.toFixed(1)} ${y.toFixed(1)}`;
-      } else {
-        path += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-      }
-    }
-    return path;
-  }
-
-  document.getElementById('chartCurveFull').setAttribute('d', buildCurvePath(50, 98));
-
-  function updateDynamics() {
-    const util = parseInt(utilizationSlider.value);
-    const q = queueSize(util);
-    const mult = cycleMultiplier(util);
-
-    document.getElementById('utilizationValue').textContent = util;
-    document.getElementById('insightUtil').textContent = util;
-    document.getElementById('insightMultiplier').textContent = Math.round(mult);
-
-    const queueNum = document.getElementById('queueNumber');
-    queueNum.textContent = q < 10 ? q.toFixed(1) : Math.round(q);
-
-    let fontSize;
-    if (util < 70) fontSize = 64;
-    else if (util < 80) fontSize = 80;
-    else if (util < 88) fontSize = 100;
-    else if (util < 93) fontSize = 120;
-    else if (util < 96) fontSize = 140;
-    else fontSize = 160;
-    queueNum.style.fontSize = fontSize + 'px';
-
-    const x = rhoToX(util);
-    const y = queueToY(q);
-    const point = document.getElementById('chartPoint');
-    point.setAttribute('cx', x);
-    point.setAttribute('cy', y);
-    point.setAttribute('r', util < 80 ? 7 : util < 90 ? 9 : util < 95 ? 11 : 13);
-
-    document.getElementById('chartCurveActive').setAttribute('d', buildCurvePath(50, util));
-
-    const badge = document.getElementById('zoneBadge');
-    const zoneInsight = document.getElementById('insightZone');
-    if (util < 75) {
-      badge.textContent = 'Zone confortable';
-      badge.className = 'zone-badge zone-safe';
-      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone confortable</strong>. Vos délais sont maîtrisés.';
-    } else if (util < 88) {
-      badge.textContent = 'Zone de tension';
-      badge.className = 'zone-badge zone-warning';
-      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone de tension</strong>. Les délais commencent à déraper.';
-    } else {
-      badge.textContent = 'Zone critique';
-      badge.className = 'zone-badge zone-danger';
-      zoneInsight.innerHTML = 'Votre équipe est dans la <strong>zone critique</strong>. Chaque nouvelle demande attend longtemps.';
-    }
-  }
-
-  utilizationSlider.addEventListener('input', updateDynamics);
-
-  // Toggle "Pourquoi ça explose ?"
-  const whyToggle = document.getElementById('whyToggle');
-  const whyContent = document.getElementById('whyContent');
-  const whyToggleLabel = document.getElementById('whyToggleLabel');
-
-  whyToggle.addEventListener('click', () => {
-    whyContent.classList.toggle('visible');
-    whyToggle.classList.toggle('active');
-    whyToggleLabel.textContent = whyContent.classList.contains('visible')
-      ? "Masquer l'explication"
-      : 'Pourquoi ça explose ?';
-  });
-
-  // Rendre la courbe elle-même interactive : on drag/clique sur le SVG
-  // et ça pilote le slider (source de vérité) puis updateDynamics.
-  const chartSvg = document.getElementById('chartSvg');
-  const chartPoint = document.getElementById('chartPoint');
-  let isDragging = false;
-
-  function utilFromEvent(evt) {
-    const rect = chartSvg.getBoundingClientRect();
-    const viewboxX = ((evt.clientX - rect.left) / rect.width) * 400;
-    const clipped = Math.max(40, Math.min(390, viewboxX));
-    const util = 50 + ((clipped - 40) / 350) * 50;
-    return Math.max(50, Math.min(98, Math.round(util)));
-  }
-
-  function setUtilFromEvent(evt) {
-    const util = utilFromEvent(evt);
-    utilizationSlider.value = util;
-    updateDynamics();
-  }
-
-  chartSvg.addEventListener('pointerdown', (evt) => {
-    isDragging = true;
-    chartPoint.classList.add('dragging');
-    chartSvg.setPointerCapture(evt.pointerId);
-    setUtilFromEvent(evt);
-  });
-
-  chartSvg.addEventListener('pointermove', (evt) => {
-    if (!isDragging) return;
-    setUtilFromEvent(evt);
-  });
-
-  chartSvg.addEventListener('pointerup', (evt) => {
-    isDragging = false;
-    chartPoint.classList.remove('dragging');
-    try { chartSvg.releasePointerCapture(evt.pointerId); } catch (_) {}
-  });
-
-  chartSvg.addEventListener('pointercancel', () => {
-    isDragging = false;
-    chartPoint.classList.remove('dragging');
-  });
-
   // ============================================================
-  // CTA : RÉSERVER UN APPEL (Calendly avec pré-remplissage)
+  // CTA : INSCRIPTION KIT (mini-formation)
   // ============================================================
 
-  const ctaForm = document.getElementById('ctaForm');
-  const ctaEmail = document.getElementById('ctaEmail');
-  const ctaSubmit = document.getElementById('ctaSubmit');
+  const KIT_FORM_ID = 'd1811eacaa';
+  const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
+
+  const kitForm = document.getElementById('kitForm');
+  const kitEmail = document.getElementById('kitEmail');
+  const kitSubmit = document.getElementById('kitSubmit');
+  const ctaFormBlock = document.getElementById('ctaForm');
+  const ctaSuccess = document.getElementById('ctaSuccess');
   const ctaError = document.getElementById('ctaError');
-  const calendlyModal = document.getElementById('calendlyModal');
-  const calendlyIframe = document.getElementById('calendlyIframe');
-  const modalClose = document.getElementById('modalClose');
+  const successEmail = document.getElementById('successEmail');
 
-  function collectCalculationData(email) {
-    const decision = decisionInput.value.trim() || 'Non renseigné';
-    const gain = parseInt(gainSlider.value);
-    const oneshot = parseInt(oneshotSlider.value);
-    const months = parseInt(monthsSlider.value);
-    const burn = parseInt(burnSlider.value);
-    const utilization = parseInt(utilizationSlider.value);
-
-    let valueNotCreated;
-    if (currentMode === 'recurring') {
-      valueNotCreated = gain * months;
-    } else {
-      valueNotCreated = oneshot * ONESHOT_RATE * months;
-    }
-    const totalCost = Math.round(valueNotCreated + (burn * months));
-    const q = queueSize(utilization);
-    const taches = q < 10 ? q.toFixed(1) : Math.round(q);
-
-    return { email, decision, months, totalCost, utilization, taches,
-             mode: currentMode, gain, oneshot, burn };
+  function showCtaError(message) {
+    ctaError.textContent = message;
+    ctaError.classList.add('visible');
   }
 
-  function buildTypeformUrl(data) {
-    const params = new URLSearchParams({
-      email: data.email,
-      decision: data.decision,
-      mode_gain: data.mode === 'recurring' ? 'Recurrent' : 'One-shot',
-      gain_mensuel: data.gain,
-      valeur_oneshot: data.oneshot,
-      mois_retard: data.months,
-      cash_burn: data.burn,
-      cout_total: data.totalCost,
-      charge_equipe: data.utilization,
-      taches_attente: data.taches
-    });
-    return `${TYPEFORM_URL}#${params.toString()}`;
+  function hideCtaError() {
+    ctaError.classList.remove('visible');
   }
 
-  function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  function showCtaSuccess(email) {
+    successEmail.textContent = email;
+    ctaFormBlock.style.display = 'none';
+    ctaSuccess.style.display = 'block';
   }
 
-  ctaForm.addEventListener('submit', (e) => {
+  kitForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = ctaEmail.value.trim();
+    hideCtaError();
 
-    if (!isValidEmail(email)) {
-      ctaError.classList.add('visible');
-      ctaEmail.focus();
+    const email = kitEmail.value.trim();
+    if (!email || !email.includes('@')) {
+      showCtaError('Veuillez saisir une adresse email valide.');
       return;
     }
 
-    ctaError.classList.remove('visible');
-    ctaSubmit.disabled = true;
-    ctaSubmit.textContent = 'Ouverture...';
+    kitSubmit.disabled = true;
+    kitSubmit.classList.add('loading');
+    const originalText = kitSubmit.textContent;
+    kitSubmit.textContent = 'Envoi en cours';
 
-    const data = collectCalculationData(email);
-    calendlyIframe.src = buildTypeformUrl(data);
-    calendlyModal.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-
-    setTimeout(() => {
-      ctaSubmit.disabled = false;
-      ctaSubmit.textContent = 'Réserver un appel →';
-    }, 1000);
-  });
-
-  function closeModal() {
-    calendlyModal.classList.remove('visible');
-    document.body.style.overflow = '';
-    setTimeout(() => { calendlyIframe.src = 'about:blank'; }, 300);
-  }
-
-  modalClose.addEventListener('click', closeModal);
-  calendlyModal.addEventListener('click', (e) => {
-    if (e.target === calendlyModal) closeModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && calendlyModal.classList.contains('visible')) {
-      closeModal();
+    try {
+      const formData = new FormData();
+      formData.append('email_address', email);
+      await fetch(KIT_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+      // En mode no-cors la réponse n'est pas lisible, on suppose le succès.
+      showCtaSuccess(email);
+    } catch (err) {
+      console.error('Erreur Kit:', err);
+      kitSubmit.disabled = false;
+      kitSubmit.classList.remove('loading');
+      kitSubmit.textContent = originalText;
+      showCtaError('Une erreur est survenue. Veuillez réessayer dans un instant.');
     }
   });
 </script>
