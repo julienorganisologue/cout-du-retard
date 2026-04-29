@@ -1741,7 +1741,7 @@
       const data = await response.json();
 
       if (response.ok && data.subscription) {
-        showCtaSuccess(email);
+        window.location.href = 'https://organisologie.com/merci/';
       } else {
         const errorMsg = data.message || data.error || 'Une erreur est survenue.';
         showCtaError(errorMsg);
