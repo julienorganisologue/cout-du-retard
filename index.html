@@ -819,10 +819,14 @@
 
   .cta-form {
     display: flex;
+    flex-direction: column;
     gap: 8px;
-    max-width: 400px;
+    max-width: 360px;
     margin: 0 auto;
   }
+
+  .cta-form input,
+  .cta-form button { width: 100%; box-sizing: border-box; }
 
   .cta-form input {
     flex: 1;
